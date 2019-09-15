@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+
+<head>
+	<title>Administrative Page</title>	
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+	<header id="my-header">
+		<div class="container">
+			<ul><li>
+				<a href="Home.html">Home</a></li><li>
+				<a href="ShowCase.html">Projects</a></li><li>				
+				<a href="https://github.com/AboutTreeFittyy">GitHub</a></li><li>				
+				<a href="https://www.linkedin.com/">LinkedIn</a></li><li>
+				<a href="Admin.html">Game</a></li><li>
+			</li></ul>
+		</div>		
+	</header>
+	<section class="my-form" id="my-form">
+		<div class="container">
+			<h1>ShowCase Management</h1>
+			<form enctype="multipart/form-data" action="/upload/image" method="post">
+				<h2>Add New:</h2>
+				Title <input type="text" name="title"><br>
+				Link<input type="text" name="link"><br>
+				Description<input type="text" name="description"><br>
+				Add Skills: 
+				<input type="radio" value="Skill" name="skill1">Skill 1
+				<input type="radio" value="Skill" name="skill2">Skill 2
+				<input type="radio" value="Skill" name="skill3">Skill 3<br>
+				<input class="button" type="file" value="Upload Photo"><br><br>
+				<input class="button" type="submit" value="Add Item"><br><br>
+				<h2>Edit Item Order:</h2>
+				<div class="dropdown">
+					<button class="drop">Skill 1</button>
+					<div class="dropdown-skills">
+						<a href="#">1</a>
+						<a href="#">2</a>
+						<a href="#">3</a>
+					</div>
+				</div>
+				<div class="dropdown">
+					<button class="drop">Skill 2</button>
+					<div class="dropdown-skills">
+						<a href="#">1</a>
+						<a href="#">2</a>
+						<a href="#">3</a>
+					</div>
+				</div>
+				<div class="dropdown">
+					<button class="drop">Skill 3</button>
+					<div class="dropdown-skills">
+						<a href="#">1</a>
+						<a href="#">2</a>
+						<a href="#">3</a>
+					</div>
+				</div>
+				<h1>HomePage Management</h1>
+
+				<h2>Add New Skill:</h2>
+				Title<input type="text" name="newtitle"><br>
+				Summary<input type="text" name="summary"><br>
+
+				<h2>Remove Skill:</h2>
+				<input type="radio" value="Skill" name="skillremove1">Skill 1
+				<input type="radio" value="Skill" name="skillremove2">Skill 2
+				<input type="radio" value="Skill" name="skillremove3">Skill 3<br>
+
+				<h2>Change Main Picture:</h2>
+				<input class="button" type="submit" value="Upload Photo">
+
+				<h2>Change Details:</h2>
+				Name<input type="text" name="name"><br>
+				Description<input type="text" name="namedescription"><br>
+				<input class="button" type="submit" value="Save Changes">
+			</form> 
+		</div>
+	</section>
+	<footer id="my-footer">
+		<p>Author: Mathew Boland - Last Updated:July 18, 2019</p>
+	</footer>
+</body>
+</html>
