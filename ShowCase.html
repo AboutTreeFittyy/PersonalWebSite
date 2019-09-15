@@ -6,11 +6,20 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <script>
+	function switchImage(param){
+		if(param==1){
+			document.getElementById("current-image").src = "images/dragon.jpg";
+		} else{
+			document.getElementById("current-image").src = "images/myself.jpg";			
+		}
+		resizeThumbNails();
+	}
 	function resizeThumbNails(){
-		var tnHeight = document.getElementById("current-image").clientHeight;
+		var tnHeight = document.getElementById("image-container").clientHeight;
 		document.getElementById("mts").style.height = tnHeight+"px";
 		document.getElementById("my-thumbnail").style.height = tnHeight+"px";
 	}
+	window.onload = resizeThumbNails;
 	window.onresize = resizeThumbNails;
 </script>
 <body>
@@ -30,7 +39,7 @@
 			Feel free to browse and check out some of the projects I've made
 		</div>
 		<div class="my-top-showcase" id="mts">
-			<div class="image-container">
+			<div class="image-container" id="image-container">
 				<img id="current-image" src="images/dragon.jpg" class="my-screen">		
 				<div class="caption-container">
 					<div id="my-caption" class="my-caption">This is the caption</div>
@@ -38,18 +47,18 @@
 				</div>
 			</div>
 			<div id="my-thumbnail" class ="my-thumbnail">
-				<img src="images/dragon_tn.jpg" class="my-screen">
-				<img src="images/myself_tn.jpg" class="my-screen">
-				<img src="images/dragon_tn.jpg" class="my-screen">
-				<img src="images/myself_tn.jpg" class="my-screen">
-				<img src="images/dragon_tn.jpg" class="my-screen">
-				<img src="images/myself_tn.jpg" class="my-screen">
-				<img src="images/dragon_tn.jpg" class="my-screen">
-				<img src="images/myself_tn.jpg" class="my-screen">
-				<img src="images/dragon_tn.jpg" class="my-screen">
-				<img src="images/myself_tn.jpg" class="my-screen">
-				<img src="images/dragon_tn.jpg" class="my-screen">
-				<img src="images/myself_tn.jpg" class="my-screen">
+				<img src="images/dragon_tn.jpg" class="my-screen" id="img1" onClick="switchImage(1)">
+				<img src="images/myself_tn.jpg" class="my-screen" id="img2" onClick="switchImage(2)">
+				<img src="images/dragon_tn.jpg" class="my-screen" id="img3" onClick="switchImage(1)">
+				<img src="images/myself_tn.jpg" class="my-screen" id="img4" onClick="switchImage(2)">
+				<img src="images/dragon_tn.jpg" class="my-screen" id="img5" onClick="switchImage(1)">
+				<img src="images/myself_tn.jpg" class="my-screen" id="img6" onClick="switchImage(2)">
+				<img src="images/dragon_tn.jpg" class="my-screen" id="img7" onClick="switchImage(1)">
+				<img src="images/myself_tn.jpg" class="my-screen" id="img8" onClick="switchImage(2)">
+				<img src="images/dragon_tn.jpg" class="my-screen" id="img9" onClick="switchImage(1)">
+				<img src="images/myself_tn.jpg" class="my-screen" id="img10" onClick="switchImage(2)">
+				<img src="images/dragon_tn.jpg" class="my-screen" id="img11" onClick="switchImage(1)">
+				<img src="images/myself_tn.jpg" class="my-screen" id="img12" onClick="switchImage(2)">
 			</div>
 		</div>
 		<div class="my-details">

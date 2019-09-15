@@ -31,7 +31,8 @@
  
  #my-header li{
 	 float:left;
-	 width:15%;
+	 
+	 padding-right: 5%;
 	 display:inline;
 }
 
@@ -148,6 +149,7 @@
  
  .image-container{
 	width:80%;
+	text-align: center;
  }
  
  .image-container:hover .caption-container{
