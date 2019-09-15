@@ -5,7 +5,14 @@
 	<title>Show Case</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
-
+<script>
+	function resizeThumbNails(){
+		var tnHeight = document.getElementById("current-image").clientHeight;
+		document.getElementById("mts").style.height = tnHeight+"px";
+		document.getElementById("my-thumbnail").style.height = tnHeight+"px";
+	}
+	window.onresize = resizeThumbNails;
+</script>
 <body>
 	<header id="my-header">
 		<div class="container">
@@ -22,9 +29,9 @@
 		<div class="my-details">
 			Feel free to browse and check out some of the projects I've made
 		</div>
-		<div class="my-top-showcase">
+		<div class="my-top-showcase" id="mts">
 			<div class="image-container">
-				<img id="my-screen" src="images/dragon.jpg" class="my-screen">		
+				<img id="current-image" src="images/dragon.jpg" class="my-screen">		
 				<div class="caption-container">
 					<div id="my-caption" class="my-caption">This is the caption</div>
 					<div id="my-info" class="my-info">This is the info</div>
