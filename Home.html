@@ -28,42 +28,42 @@
 				Some guy who writes computer programs. Yada yada I'll think of a better description of myself later.
 				For now this will do though to test the look of my site I guess.</br></br>	
 				More on what I do:
-				<ul><li>
-					<a href="#c">Programming in C</a></li><li>
-					<a href="#java">Programming in Java</a></li><li>
-					<a href="#android">Android Studio</a></li>
-					<a href="#web">Web Building</a></li>						
-				</ul>				
+				<ul id="skill-list"></ul>
 			</div>			
 		</div>
-		<div class="my-skill" id="c">
-			<h2>Programming in C</h2>
-			I wrote a lot in C my dude. Like a lot. Well for a student it was a lot. I wrote a compiler and got
-			myself a stuffed dinosaur, you jelly?</br>
-			<a href="#my-header">Compiler Project</a></br>
-		</div>
-		<div class="my-skill" id="java">
-			<h2>Programming in Java</h2>
-			To be honest this is my strong language. I've been using it for around 5 years now. Learned to code with it 
-			and while I know it's got some issues. It's still a fun language to write programs with. Check out my calculator 
-			on GitHub I made in Java or the android projects, they're in Java too.</br>
-			<a href="#my-header">Calculator Project</a></br>
-		</div>
-		<div class="my-skill" id="android">
-			<h2>Android Studio</h2>
-			I've built a few games in android studio. Platformer, flappy bird, and asteroid style stuff. Check out my GitHub
-			I've got more on it there.</br>
-			<a href="#my-header">Android Platformer</a><a href="#my-header">Android Asteroids</a></br>
-		</div>
-		<div class="my-skill" id="web">
-			<h2>Web Building</h2>
-			Well I mean come on. I've clearly done something. What do you think your reading this on? or maybe you just really hate 
-			it that much... alright fine don't hire me then, see if I care!</br>
-			<a href="#my-header">This Website</a></br>
-		</div>
+		<div class = "my-skills" id="skills"></div>
 		<footer id="my-footer">
-			<p>Author: Mathew Boland - Last Updated:July 18, 2019</p>
+			<p>Author: Mathew Boland - Last Updated:September 15, 2019</p>
 		</footer>
-	</div>
+	</div>	
+	<script>
+	//Arrays that holds the contents to print on the page
+	var titles = ["Programming in C", "Programming in Java", "Android Studio", "Web Building"];
+	var descriptions = ["I wrote a lot in C my dude. Like a lot. Well for a student it was a lot. I wrote a compiler and got myself a stuffed dinosaur, you jelly?", "To be honest this is my strong language. I've been using it for around 5 years now. Learned to code with it and while I know it's got some issues. It's still a fun language to write programs with. Check out my calculator on GitHub I made in Java or the android projects, they're in Java too.", "I've built a few games in android studio. Platformer, flappy bird, and asteroid style stuff. Check out my GitHubI've got more on it there.", "Well I mean come on. I've clearly done something. What do you think your reading this on? or maybe you just really hate it that much... alright fine don't hire me then, see if I care!"];
+	var array1 = ["Compiler Project"];
+	var array2 = ["Calculator Project"];
+	var array3 = ["Android Platformer", "Android Asteroids"];
+	var array4 = ["This website"];
+	var arrayArray = [array1, array2, array3, array4];
+	//Function to add the arrays contents to the page for display
+	function printPageContents(){
+		var list = document.getElementById("skill-list"); // for the skill list up top
+		var cell = document.getElementById("skills"); // for the skills section underneath
+		//loop through sections to add for length of array
+		for(var i = 0; i < titles.length; i++){
+			//Add each element of the skills list
+			list.insertAdjacentHTML('beforeend', '<li><a href="#'+titles[i]+'">'+titles[i]+'</a></li>');
+			//More complex now, add each skill and its details to my skills section div
+			cell.insertAdjacentHTML('beforeend', '<div class="my-skill" id="'+titles[i]+'"><h2>'+titles[i]+'</h2>');
+			cell.insertAdjacentHTML('beforeend', ''+descriptions[i]+'</br>');
+			for(var j = 0; j < arrayArray[i].length; j++){
+				cell.insertAdjacentHTML('beforeend', '<a href="#my-header">'+arrayArray[i][j]+'</a>');
+			}
+			cell.insertAdjacentHTML('beforeend', '</br></div>');
+		}
+	}
+	//set printPageContents to run when page loads
+	window.onload = printPageContents;
+</script>
 </body>
 </html>

@@ -202,7 +202,7 @@
 }
  
  .my-showcase{
-	 height:700px;
+	 height:500px;
 	 display:flex;
 	 position:relative;
 	 overflow:hidden;
@@ -210,19 +210,20 @@
  }
  
  .my-showcase-left{	 
-	 width:100%;
+	 width: 25%;
 	 max-height:80%;
 	 padding-top:25px;
-	 
+	 padding-right: 25px;
+	 padding-bottom: 10%;
  }
  
  .my-showcase-right{
 	 line-height: 2.5em;
 	 width:40%;
-	 max-height:60%;
-	 padding-top:25px;
+	 max-height:20%;
+	 
 	 text-align:left;
-	 padding:20px;
+	 padding:25px;
 	 font-size:20px;
 	 text-decoration:none;
  }
@@ -240,8 +241,9 @@
 	 position:absolute;
 	 bottom:0;
 	 width:100%;
-	 max-height:40%;
-	 padding-bottom:25px;
+	 height:20%;
+	 padding-top: 15px;
+	 padding-bottom:15px;
  }
  
  /*Home page stuff*/
@@ -277,14 +279,17 @@
 	 list-style-type:none;
 }
 
- .my-skill{	
-	border-top:2px solid black;
-	padding-top:15px;
-	padding-bottom:15px;
-	text-align:left;
+.my-skill{
+	 border-top:2px solid black;
+	 padding-top:15px;
+	 padding-bottom:25px;
+}
+
+ .my-skills{
+	 text-align:left;
 }
  
-  .my-skill a{
+ .my-skills a{
 	 color:blue;
 	 padding-right:20px;
 	 text-decoration:none;

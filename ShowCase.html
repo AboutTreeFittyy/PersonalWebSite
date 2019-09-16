@@ -5,23 +5,6 @@
 	<title>Show Case</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
-<script>
-	function switchImage(param){
-		if(param==1){
-			document.getElementById("current-image").src = "images/dragon.jpg";
-		} else{
-			document.getElementById("current-image").src = "images/myself.jpg";			
-		}
-		resizeThumbNails();
-	}
-	function resizeThumbNails(){
-		var tnHeight = document.getElementById("image-container").clientHeight;
-		document.getElementById("mts").style.height = tnHeight+"px";
-		document.getElementById("my-thumbnail").style.height = tnHeight+"px";
-	}
-	window.onload = resizeThumbNails;
-	window.onresize = resizeThumbNails;
-</script>
 <body>
 	<header id="my-header">
 		<div class="container">
@@ -105,8 +88,28 @@
 			</div>
 		</div>	
 		<footer id="my-footer">
-			<p>Author: Mathew Boland - Last Updated:July 18, 2019</p>
+			<p>Author: Mathew Boland - Last Updated:September 15, 2019</p>
 		</footer>
 	</div>
+	<script>
+	//Switch the main gallery image to the one passed in the parameter
+	function switchImage(param){
+		if(param==1){
+			document.getElementById("current-image").src = "images/dragon.jpg";
+		} else{
+			document.getElementById("current-image").src = "images/myself.jpg";			
+		}
+		resizeThumbNails();
+	}
+	//Resizes the thumbnails for the gallery to match the height of the main image
+	function resizeThumbNails(){
+		var tnHeight = document.getElementById("image-container").clientHeight;
+		document.getElementById("mts").style.height = tnHeight+"px";
+		document.getElementById("my-thumbnail").style.height = tnHeight+"px";
+	}
+	//set the resizeThumbNails function to be called when the page loads or is resized
+	window.onload = resizeThumbNails;
+	window.onresize = resizeThumbNails;
+</script>
 </body>
 </html>
