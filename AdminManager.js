@@ -9,31 +9,55 @@
 
 /* This creates a copy of the main image that can be used on mobile versions
  * of the website. It's important features are reducing the quality of the 
- * and the hieght of the image to be more portable.
+ * and the height of the image to be more portable.
 */
-function createMobileImageCopy(){
-	
+function createMobileImageCopy(dataURL){
+	var image = new Image();
+	image.src = dataURL;
+	//Create a canvas to use for adjusting the image with 
+	var canvas = document.createElement("canvas");
+	canvas.width = image.width*0.3;
+	canvas.height = image.height*0.3;
+	var ctx = canvas.getContext("2d");
+	ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+	//Return the image made on the canvas
+	return canvas.toDataURL("image/jpeg", 0.5);
 }
 /* This creates a copy of the main image with a 1:5 ratio to be used for the 
  * desktop version of the sites thumbnails. Image quality and size are reduced
  * to improve performance. A mobile version of this function may be made later
  * to test if it can further improve mobile performance.
 */
-function createThumbNailCopy(){
-	
-}
-/* This is the function that checks the image to make sure it meets the 
- * criteria for an image that will work with the sites framework in 
- * terms of dimensions and quality. Returns true if image is okay.
-*/
-function correctImageSize(){
-	
+function createThumbNailCopy(dataURL){
+	var image = new Image();
+	image.src = dataURL;
+	//Create a canvas to use for adjusting the image with 
+	var canvas = document.createElement("canvas");
+	canvas.width = image.width*0.2;
+	canvas.height = image.height*0.2;
+	var ctx = canvas.getContext("2d");
+	ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+	//Return the image made on the canvas
+	return canvas.toDataURL("image/jpeg", 0.5);
 }
 /* This function takes the image from the form and adjusts its height to be
- * a maximum of 500px. It is important to use correctImageSize() first
- * otherwise this function may not work correctly and save a bad image.
- * Once the dimensions are adjusted, a copy is saved to the database.
+ * at the same scale it was before adjusted to a 1200 pixel width.
+ * Once the dimensions are adjusted, a copy of the data url is returned.
+ * Null is returned on failure.
 */
-function normalizeImageHeight(){
-	
+function normalizeImage(dataURL){
+	var image = new Image();
+	image.src = dataURL;
+	var scale = image.height/image.width;
+	if(image.height > image.width || image.width < 1600 || image.height < 900){
+		return null; // this image would look terrible in the gallery
+	}
+	//Create a canvas to use for adjusting the image with 
+	var canvas = document.createElement("canvas");
+	canvas.width = 1200;
+	canvas.height = scale*1200;
+	var ctx = canvas.getContext("2d");
+	ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+	//Return the image made on the canvas
+	return canvas.toDataURL("image/jpeg", 0.9);
 }

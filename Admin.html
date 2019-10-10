@@ -22,17 +22,18 @@
 	<section class="my-form" id="my-form">
 		<div class="container">
 			<h1>ShowCase Management</h1>
+			<div id="imageTest"><img id="test1"><img id="test2"><img id="test3"></div>
 			<form enctype="multipart/form-data" action="/upload/image" method="post">
-				<h2>Add New:</h2>
-				Title <input type="text" name="title"><br>
-				Link<input type="text" name="link"><br>
-				Description<input type="text" name="description"><br>
+				<h2>Add New Project:</h2>
+				Title <input type="text" id="projectTitle" name="title"><br>
+				Link<input type="text" id="projectLink" name="link"><br>
+				Description<input type="text" id="projectDescription" name="description"><br>
 				Add Skills: 
-				<input type="radio" value="Skill" name="skill1">Skill 1
-				<input type="radio" value="Skill" name="skill2">Skill 2
-				<input type="radio" value="Skill" name="skill3">Skill 3<br>
-				<input class="button" type="file" value="Upload Photo"><br><br>
-				<input class="button" type="submit" value="Add Item"><br><br>
+				<input type="checkbox" id="projectSkill0" name="skill">Skill 1
+				<input type="checkbox" id="projectSkill1" name="skill">Skill 2
+				<input type="checkbox" id="projectSkill2" name="skill">Skill 3<br>Add Image:
+				<input class="button" id="projectImage" type="file"><br><br>
+				<input class="button" type="button" onClick="addProject()" value="Add Item"><br><br>
 				<h2>Edit Item Order:</h2>
 				<div class="dropdown">
 					<button class="drop">Skill 1</button>
@@ -84,5 +85,40 @@
 			<p>Author: Mathew Boland - Last Updated:September 15, 2019</p>
 		</footer>
 	</div>
+	<script type="text/javascript" src="AdminManager.js"></script>
+	<script type="text/javascript">
+		function addProject(){
+			//Save the text elements
+			var title = document.getElementById("projectTitle").value;
+			var link = document.getElementById("projectLink").value;
+			var description = document.getElementById("projectDescription").value;
+			//Now save which skills are selected
+			var skill = [];
+			//Check projectSkill ids until they don't exist anymore
+			for (var i = 0; document.getElementById("projectSkill"+i) != null; i++){
+				//Lastly check if the skill was selected before saving it
+				if(document.getElementById("projectSkill"+i).checked === true){
+					skill.push(i);
+				}
+			}
+			//Get image from form and make copies for db
+			var file = document.querySelector('input[type=file]').files[0];
+			var reader = new FileReader();
+			var image, mobileImage, thumbNail;
+			reader.onloadend = function(){
+				image = normalizeImage(reader.result);
+				if(image != null){
+					mobileImage = createMobileImageCopy(image);
+					thumbnail = createThumbNailCopy(image);
+					document.getElementById("test1").src = image;
+					document.getElementById("test2").src = mobileImage;
+					document.getElementById("test3").src = thumbnail;
+				}else{
+					alert("Invalid Photo Uploaded");
+				}				
+			}			
+			reader.readAsDataURL(file);			
+		}
+	</script>
 </body>
 </html>
