@@ -2,19 +2,16 @@ CREATE TABLE `misc` (
  `misc_id` int(11) NOT NULL,
  `Name` text NOT NULL,
  `About` text NOT NULL,
- `Image` longblob NOT NULL,
+ `Image` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
  PRIMARY KEY (`misc_id`)
 );
 
 CREATE TABLE `showcase` (
- `showcase_id` int(11) NOT NULL,
+ `showcase_id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
  `Title` text NOT NULL,
  `Description` text NOT NULL,
- `Image_Full` longblob NOT NULL,
- `Image_Thumbnail` longblob NOT NULL,
- `Image_Mobile` longblob NOT NULL,
- `order` int(11) NOT NULL,
- PRIMARY KEY (`showcase_id`)
+ `Image_Full` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+ `Showcase_Order` int(11) NOT NULL
 );
 
 CREATE TABLE `skill` (

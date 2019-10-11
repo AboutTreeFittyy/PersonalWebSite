@@ -23,17 +23,18 @@
 		<div class="container">
 			<h1>ShowCase Management</h1>
 			<div id="imageTest"><img id="test1"><img id="test2"><img id="test3"></div>
-			<form enctype="multipart/form-data" action="/upload/image" method="post">
+			<form enctype="multipart/form-data" id="uploadProject" method="post">
 				<h2>Add New Project:</h2>
 				Title <input type="text" id="projectTitle" name="title"><br>
-				Link<input type="text" id="projectLink" name="link"><br>
 				Description<input type="text" id="projectDescription" name="description"><br>
 				Add Skills: 
 				<input type="checkbox" id="projectSkill0" name="skill">Skill 1
 				<input type="checkbox" id="projectSkill1" name="skill">Skill 2
 				<input type="checkbox" id="projectSkill2" name="skill">Skill 3<br>Add Image:
-				<input class="button" id="projectImage" type="file"><br><br>
-				<input class="button" type="button" onClick="addProject()" value="Add Item"><br><br>
+				<input class="button" id="projectImage" type="file" name="file"><br><br>
+				<input class="button" type="submit" name="upload" value="upload"><br><br>
+			</form>
+			<form enctype="multipart/form-data" action="upload.php" method="post">
 				<h2>Edit Item Order:</h2>
 				<div class="dropdown">
 					<button class="drop">Skill 1</button>
@@ -59,6 +60,7 @@
 						<a href="#">3</a>
 					</div>
 				</div>
+			</form>
 				<h1>HomePage Management</h1>
 
 				<h2>Add New Skill:</h2>
@@ -66,6 +68,7 @@
 				Summary<input type="text" name="summary"><br>
 
 				<h2>Remove Skill:</h2>
+			<form enctype="multipart/form-data" action="upload.php" method="post">
 				<input type="radio" value="Skill" name="skillremove1">Skill 1
 				<input type="radio" value="Skill" name="skillremove2">Skill 2
 				<input type="radio" value="Skill" name="skillremove3">Skill 3<br>
@@ -85,12 +88,49 @@
 			<p>Author: Mathew Boland - Last Updated:September 15, 2019</p>
 		</footer>
 	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
 	<script type="text/javascript" src="AdminManager.js"></script>
-	<script type="text/javascript">
+	<script>
+		$(document).ready(function(){		 
+			$('#uploadProject').on('submit', function(event){
+				event.preventDefault();
+				var image_name = $('#projectImage').val();
+				var path = document.getElementById('projectImage').value;
+				var file_name;
+				if (path) {
+					var start = (path.indexOf('\\') >= 0 ? path.lastIndexOf('\\') : path.lastIndexOf('/'));
+					file_name = path.substring(start);
+					if (file_name.indexOf('\\') === 0 || file_name.indexOf('/') === 0) {
+						file_name = file_name.substring(1);
+					}
+				}
+				var dataPost = {
+				"title" : document.getElementById("projectTitle").value,
+				"description" : document.getElementById("projectDescription").value,
+				"fileName" : file_name
+				};
+				
+				var dataString = JSON.stringify(dataPost);
+				if(image_name == ''){
+					alert("Please Select Image");
+					return false;
+				}
+				else{
+					$.ajax({
+						url:"upload.php",
+						//type:"POST",
+						method: "POST",
+						data: {myData: dataString},
+						success:function(data){
+							alert(data);
+						}
+					});
+				}
+			});		 
+		});  
 		function addProject(){
 			//Save the text elements
 			var title = document.getElementById("projectTitle").value;
-			var link = document.getElementById("projectLink").value;
 			var description = document.getElementById("projectDescription").value;
 			//Now save which skills are selected
 			var skill = [];
