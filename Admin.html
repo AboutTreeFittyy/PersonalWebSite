@@ -34,7 +34,7 @@
 				<input class="button" id="projectImage" type="file" name="file"><br><br>
 				<input class="button" type="submit" name="upload" value="upload"><br><br>
 			</form>
-			<form enctype="multipart/form-data" action="upload.php" method="post">
+			<form enctype="multipart/form-data" action=".php" method="post">
 				<h2>Edit Item Order:</h2>
 				<div class="dropdown">
 					<button class="drop">Skill 1</button>
@@ -68,7 +68,7 @@
 				Summary<input type="text" name="summary"><br>
 
 				<h2>Remove Skill:</h2>
-			<form enctype="multipart/form-data" action="upload.php" method="post">
+			<form enctype="multipart/form-data" action=".php" method="post">
 				<input type="radio" value="Skill" name="skillremove1">Skill 1
 				<input type="radio" value="Skill" name="skillremove2">Skill 2
 				<input type="radio" value="Skill" name="skillremove3">Skill 3<br>
@@ -94,39 +94,56 @@
 		$(document).ready(function(){		 
 			$('#uploadProject').on('submit', function(event){
 				event.preventDefault();
-				var image_name = $('#projectImage').val();
-				var path = document.getElementById('projectImage').value;
-				var file_name;
-				if (path) {
-					var start = (path.indexOf('\\') >= 0 ? path.lastIndexOf('\\') : path.lastIndexOf('/'));
-					file_name = path.substring(start);
-					if (file_name.indexOf('\\') === 0 || file_name.indexOf('/') === 0) {
-						file_name = file_name.substring(1);
-					}
-				}
-				var dataPost = {
-				"title" : document.getElementById("projectTitle").value,
-				"description" : document.getElementById("projectDescription").value,
-				"fileName" : file_name
-				
-				};
-				
-				var dataString = JSON.stringify(dataPost);
-				if(image_name == ''){
-					alert("Please Select Image");
-					return false;
-				}
-				else{
-					$.ajax({
-						url:"upload.php",
-						//type:"POST",
-						method: "POST",
-						data: {myData: dataString},
-						success:function(data){
-							alert(data);
+				//Get image from form and make copies for db
+				var file = document.querySelector('input[type=file]').files[0];
+				var reader = new FileReader();
+				var main_image, mobileImage, thumbNail;
+				var image = new Image();
+				reader.readAsDataURL(file);
+				reader.onload = () =>{					
+					image.src = reader.result;	
+					image.onload = () =>{
+						main_image = normalizeImage(image);
+						if(main_image != null){
+							alert("Valid Photo");
+							mobileImage = createMobileImageCopy(main_image);
+							thumbnail = createThumbNailCopy(main_image);
+							document.getElementById("test1").src = main_image;
+							document.getElementById("test2").src = mobileImage;
+							document.getElementById("test3").src = thumbnail;
+							//reader.readAsDataURL(file);
+							var image_name = $('#projectImage').val();
+							var path = document.getElementById('projectImage').value;
+							//Get file name with extension
+							var file_name;
+							if (path) {
+								var start = (path.indexOf('\\') >= 0 ? path.lastIndexOf('\\') : path.lastIndexOf('/'));
+								file_name = path.substring(start);
+								if (file_name.indexOf('\\') === 0 || file_name.indexOf('/') === 0) {
+									file_name = file_name.substring(1);
+								}
+							}
+							//contains data for database only
+							var dataPost = {
+							"title" : document.getElementById("projectTitle").value,
+							"description" : document.getElementById("projectDescription").value,
+							"fileName" : file_name
+							};							
+							var dataString = JSON.stringify(dataPost);
+							//Now send the ShowCase data so it can be added to the database
+							$.ajax({
+									url:"addShowCaseData.php",
+									method: "POST",
+									data: {myData: dataString},
+									success:function(data){
+										alert(data);
+									}
+							});							
+						}else{
+							alert("Invalid Photo Uploaded");
 						}
-					});
-				}
+					};					
+				};	
 			});		 
 		});  
 		function addProject(){

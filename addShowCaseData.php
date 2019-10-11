@@ -3,7 +3,6 @@
 include 'config.php';
 $msg = '';
 $obj = json_decode($_POST["myData"]);
-//$targetFilePath = $targetDir . $fileName;
 $type = pathinfo($obj->fileName, PATHINFO_EXTENSION);
 // Allow certain file formats
 $allowedTypes = array('jpg','png','jpeg');
@@ -19,6 +18,13 @@ if(in_array($type, $allowedTypes)){
 	//invalid file type
 	$msg = "Invalid file type selected, only jpg, png or jpeg allowed.";
 }
+/*echo $msg;
+//Handle image storage
+if($obj->mainImage){
+	echo "NOTNULL";
+}
+else{echo "NULL";}
+echo "alert($obj->mainImage)";*/
 //Show error/success message
 echo $msg;
 ?>

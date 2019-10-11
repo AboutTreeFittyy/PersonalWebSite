@@ -45,11 +45,11 @@ function createThumbNailCopy(dataURL){
  * Once the dimensions are adjusted, a copy of the data url is returned.
  * Null is returned on failure.
 */
-function normalizeImage(dataURL){
-	var image = new Image();
-	image.src = dataURL;
+function normalizeImage(image){
 	var scale = image.height/image.width;
+	alert("Before Height:"+image.height+", Image Width: "+image.width+"");
 	if(image.height > image.width || image.width < 1600 || image.height < 900){
+		alert("After Height:"+image.height+", Image Width: "+image.width+" THIS BLOWS");
 		return null; // this image would look terrible in the gallery
 	}
 	//Create a canvas to use for adjusting the image with 
@@ -59,5 +59,5 @@ function normalizeImage(dataURL){
 	var ctx = canvas.getContext("2d");
 	ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 	//Return the image made on the canvas
-	return canvas.toDataURL("image/jpeg", 0.9);
+	return canvas.toDataURL("image/jpeg", 0.9);//};
 }
