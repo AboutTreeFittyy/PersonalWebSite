@@ -18,13 +18,6 @@ if(in_array($type, $allowedTypes)){
 	//invalid file type
 	$msg = "Invalid file type selected, only jpg, png or jpeg allowed.";
 }
-/*echo $msg;
-//Handle image storage
-if($obj->mainImage){
-	echo "NOTNULL";
-}
-else{echo "NULL";}
-echo "alert($obj->mainImage)";*/
 //Show error/success message
 echo $msg;
 ?>

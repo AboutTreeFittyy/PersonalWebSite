@@ -97,7 +97,7 @@
 				//Get image from form and make copies for db
 				var file = document.querySelector('input[type=file]').files[0];
 				var reader = new FileReader();
-				var main_image, mobileImage, thumbNail;
+				var main_image, mobile_image, thumbnail;
 				var image = new Image();
 				reader.readAsDataURL(file);
 				reader.onload = () =>{					
@@ -105,13 +105,9 @@
 					image.onload = () =>{
 						main_image = normalizeImage(image);
 						if(main_image != null){
-							alert("Valid Photo");
-							mobileImage = createMobileImageCopy(main_image);
+							//alert("Valid Photo");
+							mobile_image = createMobileImageCopy(main_image);
 							thumbnail = createThumbNailCopy(main_image);
-							document.getElementById("test1").src = main_image;
-							document.getElementById("test2").src = mobileImage;
-							document.getElementById("test3").src = thumbnail;
-							//reader.readAsDataURL(file);
 							var image_name = $('#projectImage').val();
 							var path = document.getElementById('projectImage').value;
 							//Get file name with extension
@@ -123,22 +119,45 @@
 									file_name = file_name.substring(1);
 								}
 							}
+							document.getElementById("test1").src = main_image;
+							document.getElementById("test2").src = mobile_image;
+							document.getElementById("test3").src = thumbnail;
 							//contains data for database only
-							var dataPost = {
+							var data = {
 							"title" : document.getElementById("projectTitle").value,
 							"description" : document.getElementById("projectDescription").value,
 							"fileName" : file_name
 							};							
-							var dataString = JSON.stringify(dataPost);
+							var dataString = JSON.stringify(data);
 							//Now send the ShowCase data so it can be added to the database
 							$.ajax({
-									url:"addShowCaseData.php",
-									method: "POST",
-									data: {myData: dataString},
-									success:function(data){
-										alert(data);
-									}
-							});							
+								url:"addShowCaseData.php",
+								method: "POST",
+								data: {myData: dataString},
+								success:function(data){
+									alert(data);
+								}
+							});
+							//Now send the photos to the server to be saved for future hosting						
+							//var blob = dataURItoBlob(main_image);
+							var formData = new FormData();
+							formData.append('main', dataURItoBlob(main_image), file_name);
+							formData.append('mobile', dataURItoBlob(mobile_image), "M_"+file_name);
+							formData.append('thumb', dataURItoBlob(thumbnail), "TN_"+file_name);
+							//Now send the ShowCase photos so it can be saved to the server
+							$.ajax({
+								url:"addShowCasePhotos.php",
+								method: "POST",
+								data: formData,
+								processData: false,
+								contentType: false,
+								success:function(data){
+									alert(data);
+								},
+								error: function(XMLHttpRequest, textStatus, errorThrown) {
+									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
+								}
+							});
 						}else{
 							alert("Invalid Photo Uploaded");
 						}
@@ -146,7 +165,30 @@
 				};	
 			});		 
 		});  
-		function addProject(){
+		/* Citation:
+		 * Source: https://stackoverflow.com/questions/6850276/how-to-convert-dataurl-to-file-object-in-javascript
+		 * Date Written: may 23, 2017
+		 * Author: Matthew
+		 */
+		function dataURItoBlob(dataURI) {
+		  // convert base64 to raw binary data held in a string
+		  // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+		  var byteString = atob(dataURI.split(',')[1]);
+		  // separate out the mime component
+		  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+		  // write the bytes of the string to an ArrayBuffer
+		  var ab = new ArrayBuffer(byteString.length);
+		  // create a view into the buffer
+		  var ia = new Uint8Array(ab);
+		  // set the bytes of the buffer to the correct values
+		  for (var i = 0; i < byteString.length; i++) {
+			  ia[i] = byteString.charCodeAt(i);
+		  }
+		  // write the ArrayBuffer to a blob, and you're done
+		  var blob = new Blob([ab], {type: mimeString});
+		  return blob;
+		}
+		/*function addProject(){
 			//Save the text elements
 			var title = document.getElementById("projectTitle").value;
 			var description = document.getElementById("projectDescription").value;
@@ -162,7 +204,7 @@
 			//Get image from form and make copies for db
 			var file = document.querySelector('input[type=file]').files[0];
 			var reader = new FileReader();
-			var image, mobileImage, thumbNail;
+			var image, mobileImage, thumbnail;
 			reader.onloadend = function(){
 				image = normalizeImage(reader.result);
 				if(image != null){
@@ -176,7 +218,7 @@
 				}				
 			}			
 			reader.readAsDataURL(file);			
-		}
+		}*/
 	</script>
 </body>
 </html>

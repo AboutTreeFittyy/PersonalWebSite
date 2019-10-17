@@ -47,7 +47,7 @@ function createThumbNailCopy(dataURL){
 */
 function normalizeImage(image){
 	var scale = image.height/image.width;
-	alert("Before Height:"+image.height+", Image Width: "+image.width+"");
+	//alert("Before Height:"+image.height+", Image Width: "+image.width+"");
 	if(image.height > image.width || image.width < 1600 || image.height < 900){
 		alert("After Height:"+image.height+", Image Width: "+image.width+" THIS BLOWS");
 		return null; // this image would look terrible in the gallery
