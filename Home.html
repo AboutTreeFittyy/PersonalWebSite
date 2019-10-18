@@ -19,52 +19,22 @@
 			</li></ul>
 		</div>		
 	</header>
+	<div class="container" id="pageData"></div>
 	<div class="container">
-		<div class="my-home">
-			<div class="my-home-left">
-				<img id="my-screen" src="images/myself.jpg" class="my-screen">	
-			</div>
-			<div class="my-home-right">				
-				</br><h2>Mathew Boland</h2></br>									
-				Some guy who writes computer programs. Yada yada I'll think of a better description of myself later.
-				For now this will do though to test the look of my site I guess.</br></br>	
-				More on what I do:
-				<ul id="skill-list"></ul>
-			</div>			
-		</div>
-		<div class = "my-skills" id="skills"></div>
 		<footer id="my-footer">
-			<p>Author: Mathew Boland - Last Updated:September 15, 2019</p>
-		</footer>
-	</div>	
+			<p>Author: Mathew Boland - Last Updated:October 17, 2019</p>
+		</footer>	
+	</div>
+	<script type="text/javascript" src="HTMLGenerator.js"></script>
 	<script type="text/javascript">
-	//Arrays that holds the contents to print on the page
-	var titles = ["Programming in C", "Programming in Java", "Android Studio", "Web Building"];
-	var descriptions = ["I wrote a lot in C my dude. Like a lot. Well for a student it was a lot. I wrote a compiler and got myself a stuffed dinosaur, you jelly?", "To be honest this is my strong language. I've been using it for around 5 years now. Learned to code with it and while I know it's got some issues. It's still a fun language to write programs with. Check out my calculator on GitHub I made in Java or the android projects, they're in Java too.", "I've built a few games in android studio. Platformer, flappy bird, and asteroid style stuff. Check out my GitHubI've got more on it there.", "Well I mean come on. I've clearly done something. What do you think your reading this on? or maybe you just really hate it that much... alright fine don't hire me then, see if I care!"];
-	var array1 = ["Compiler Project"];
-	var array2 = ["Calculator Project"];
-	var array3 = ["Android Platformer", "Android Asteroids"];
-	var array4 = ["This website"];
-	var arrayArray = [array1, array2, array3, array4];
-	//Function to add the arrays contents to the page for display
-	function printPageContents(){
-		var list = document.getElementById("skill-list"); // for the skill list up top
-		var cell = document.getElementById("skills"); // for the skills section underneath
-		//loop through sections to add for length of array
-		for(var i = 0; i < titles.length; i++){
-			//Add each element of the skills list
-			list.insertAdjacentHTML('beforeend', '<li><a href="#'+titles[i]+'">'+titles[i]+'</a></li>');
-			//More complex now, add each skill and its details to my skills section div
-			cell.insertAdjacentHTML('beforeend', '<div class="my-skill" id="'+titles[i]+'"><h2>'+titles[i]+'</h2>');
-			cell.insertAdjacentHTML('beforeend', ''+descriptions[i]+'</br>');
-			for(var j = 0; j < arrayArray[i].length; j++){
-				cell.insertAdjacentHTML('beforeend', '<a href="#my-header">'+arrayArray[i][j]+'</a>');
-			}
-			cell.insertAdjacentHTML('beforeend', '</br></div>');
-		}
+	var toPrint = '';
+	function printPage(){
+		setHomeData();
+		toPrint = getHomeData();
+		document.getElementById('pageData').innerHTML = toPrint;
 	}
 	//set printPageContents to run when page loads
-	window.onload = printPageContents;
-</script>
+	window.onload = printPage;
+	</script>
 </body>
 </html>

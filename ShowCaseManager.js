@@ -1,6 +1,6 @@
 /* FileName: ShowCaseManager.js
  * Author: Mathew Boland
- * Date Modified: October 10th, 2019
+ * Date Modified: October 16th, 2019
  * Description: Some functions that are used to manage the ShowCase. Resizing, changing 
  * images and adjusting gallery size is done here to make the page more dynamic.
 */
@@ -9,21 +9,23 @@
  * that is to be switched to and displayed in the gallery. 
 */
 function switchImage(param){
-	//Check which image it should be set to, then set it
-	if(param==1){
-		document.getElementById("current-image").src = "images/dragon.jpg";
-	} else{
-		document.getElementById("current-image").src = "images/myself.jpg";			
-	}
-	//Call resizeThumbNails to make sure gallery is adjusted after switching image
-	resizeThumbNails();
+	//Get which image it should be set to from param, then set it
+	var path = "images/"+param;
+	var image = new Image();				
+	image.src = path;	
+	document.getElementById("current-image").src = image.src;
+	//make sure the image is loaded before resizing
+	image.onload = () =>{
+		//Call resizeThumbNails to make sure gallery is adjusted after switching image
+		resizeThumbNails();
+	};
 }
 /* This function reads the image-container div to check its height so that the 
  * ShowCase can resize dynamically based on the main images current height.
 */
 function resizeThumbNails(){
 	//get the height of the image currently
-	var tnHeight = document.getElementById("image-container").clientHeight;
+	var tnHeight = document.getElementById("current-image").height;
 	//adjust the thumbnail related divs to have their height be the same as the images
 	document.getElementById("mts").style.height = tnHeight+"px";
 	document.getElementById("my-thumbnail").style.height = tnHeight+"px";

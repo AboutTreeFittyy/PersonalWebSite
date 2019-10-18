@@ -19,80 +19,23 @@
 			</li></ul>
 		</div>		
 	</header>
+	<div class="container" id="pageData"></div>
 	<div class="container">
-		<div class="my-details">
-			Feel free to browse and check out some of the projects I've made
-		</div>
-		<div class="my-top-showcase" id="mts">
-			<div class="image-container" id="image-container">
-				<img id="current-image" src="images/dragon.jpg" class="my-screen">		
-				<div class="caption-container">
-					<div id="my-caption" class="my-caption">This is the caption</div>
-					<div id="my-info" class="my-info">This is the info</div>
-				</div>
-			</div>
-			<div id="my-thumbnail" class ="my-thumbnail">
-				<img src="images/dragon_tn.jpg" class="my-screen" id="img1" onClick="switchImage(1)">
-				<img src="images/myself_tn.jpg" class="my-screen" id="img2" onClick="switchImage(2)">
-				<img src="images/dragon_tn.jpg" class="my-screen" id="img3" onClick="switchImage(1)">
-				<img src="images/myself_tn.jpg" class="my-screen" id="img4" onClick="switchImage(2)">
-				<img src="images/dragon_tn.jpg" class="my-screen" id="img5" onClick="switchImage(1)">
-				<img src="images/myself_tn.jpg" class="my-screen" id="img6" onClick="switchImage(2)">
-				<img src="images/dragon_tn.jpg" class="my-screen" id="img7" onClick="switchImage(1)">
-				<img src="images/myself_tn.jpg" class="my-screen" id="img8" onClick="switchImage(2)">
-				<img src="images/dragon_tn.jpg" class="my-screen" id="img9" onClick="switchImage(1)">
-				<img src="images/myself_tn.jpg" class="my-screen" id="img10" onClick="switchImage(2)">
-				<img src="images/dragon_tn.jpg" class="my-screen" id="img11" onClick="switchImage(1)">
-				<img src="images/myself_tn.jpg" class="my-screen" id="img12" onClick="switchImage(2)">
-			</div>
-		</div>
-		<div class="my-details">
-			Scroll down to learn more 
-		</div>
-		<div class="my-showcase">
-			<div class="my-showcase-left">
-				<img id="my-screen" src="images/dragon.jpg" class="my-screen">	
-			</div>
-			<div class="my-showcase-right">				
-					Title</br>				
-					<a href="#my-header">Back to top</a></br>				
-					<a href="https://github.com/AboutTreeFittyy">Project on GitHub</a></br>				
-					<ul><li>
-						Skill 1</li><li>
-						Skill 2</li><li>
-						Skill 3</li>						
-					</ul>				
-			</div>
-			<div class="my-showcase-bottom">
-				<div class="my-details">
-					This is a description of my project. There are many others like it but this one is mine. 
-				</div>	
-			</div>
-		</div>	
-		<div class="my-showcase">
-			<div class="my-showcase-left">
-				<img id="my-screen" src="images/myself.jpg" class="my-screen">	
-			</div>
-			<div class="my-showcase-right">				
-					Title</br>				
-					<a href="#my-header">Back to top</a></br>				
-					<a href="https://github.com/AboutTreeFittyy">Project on GitHub</a></br>				
-					<ul><li>
-						Skill 1</li><li>
-						Skill 2</li><li>
-						Skill 3</li>						
-					</ul>				
-			</div>
-			<div class="my-showcase-bottom">
-				<div class="my-details">
-					This is a description of my project. There are many others like it but this one is mine. 
-				</div>	
-			</div>
-		</div>	
 		<footer id="my-footer">
-			<p>Author: Mathew Boland - Last Updated:September 15, 2019</p>
+			<p>Author: Mathew Boland - Last Updated:October 17, 2019</p>
 		</footer>
-	</div>
+	</div>	
 	<script type="text/javascript" src="ShowCaseManager.js"></script>
+	<script type="text/javascript" src="HTMLGenerator.js"></script>
+	<script type="text/javascript">
+	var toPrint = '';
+	function printPage(){
+		setShowCaseData();
+		toPrint = getShowCaseData();
+		document.getElementById('pageData').innerHTML = toPrint;
+	}
+	//set printPageContents to run when page loads
+	printPage();
+	</script>
 </body>
 </html>

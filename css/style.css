@@ -207,7 +207,7 @@
 }
  
  .my-showcase{
-	 height:500px;
+	 height:flex;
 	 display:flex;
 	 position:relative;
 	 overflow:hidden;
@@ -215,8 +215,8 @@
  }
  
  .my-showcase-left{	 
-	 width: 25%;
-	 max-height:80%;
+	 width: 35%;
+	 max-height:40%;
 	 padding-top:25px;
 	 padding-right: 25px;
 	 padding-bottom: 10%;
@@ -225,8 +225,7 @@
  .my-showcase-right{
 	 line-height: 2.5em;
 	 width:40%;
-	 max-height:20%;
-	 
+	 max-height:40%;	 
 	 text-align:left;
 	 padding:25px;
 	 font-size:20px;
@@ -253,7 +252,7 @@
  
  /*Home page stuff*/
  .my-home{
-	 height:700px;
+	 height:flex;
 	 display:flex;
 	 position:relative;
 	 overflow:hidden;

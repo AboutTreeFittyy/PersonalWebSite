@@ -85,7 +85,7 @@
 	</section>
 	<div class="container">
 		<footer id="my-footer">
-			<p>Author: Mathew Boland - Last Updated:September 15, 2019</p>
+			<p>Author: Mathew Boland - Last Updated:October 17, 2019</p>
 		</footer>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
@@ -167,7 +167,7 @@
 		});  
 		/* Citation:
 		 * Source: https://stackoverflow.com/questions/6850276/how-to-convert-dataurl-to-file-object-in-javascript
-		 * Date Written: may 23, 2017
+		 * Date Written: May 23, 2017
 		 * Author: Matthew
 		 */
 		function dataURItoBlob(dataURI) {
@@ -188,37 +188,6 @@
 		  var blob = new Blob([ab], {type: mimeString});
 		  return blob;
 		}
-		/*function addProject(){
-			//Save the text elements
-			var title = document.getElementById("projectTitle").value;
-			var description = document.getElementById("projectDescription").value;
-			//Now save which skills are selected
-			var skill = [];
-			//Check projectSkill ids until they don't exist anymore
-			for (var i = 0; document.getElementById("projectSkill"+i) != null; i++){
-				//Lastly check if the skill was selected before saving it
-				if(document.getElementById("projectSkill"+i).checked === true){
-					skill.push(i);
-				}
-			}
-			//Get image from form and make copies for db
-			var file = document.querySelector('input[type=file]').files[0];
-			var reader = new FileReader();
-			var image, mobileImage, thumbnail;
-			reader.onloadend = function(){
-				image = normalizeImage(reader.result);
-				if(image != null){
-					mobileImage = createMobileImageCopy(image);
-					thumbnail = createThumbNailCopy(image);
-					document.getElementById("test1").src = image;
-					document.getElementById("test2").src = mobileImage;
-					document.getElementById("test3").src = thumbnail;
-				}else{
-					alert("Invalid Photo Uploaded");
-				}				
-			}			
-			reader.readAsDataURL(file);			
-		}*/
 	</script>
 </body>
 </html>
