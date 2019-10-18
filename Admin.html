@@ -23,60 +23,38 @@
 		<div class="container">
 			<h1>ShowCase Management</h1>
 			<div id="imageTest"><img id="test1"><img id="test2"><img id="test3"></div>
+			
 			<form enctype="multipart/form-data" id="uploadProject" method="post">
 				<h2>Add New Project:</h2>
 				Title <input type="text" id="projectTitle" name="title"><br>
 				Description<input type="text" id="projectDescription" name="description"><br>
 				Add Skills: 
-				<input type="checkbox" id="projectSkill0" name="skill">Skill 1
-				<input type="checkbox" id="projectSkill1" name="skill">Skill 2
-				<input type="checkbox" id="projectSkill2" name="skill">Skill 3<br>Add Image:
+				<div id="addSkills"></div>
+				<br>Add Image:<br>
 				<input class="button" id="projectImage" type="file" name="file"><br><br>
 				<input class="button" type="submit" name="upload" value="upload"><br><br>
 			</form>
+			
+			<h2>Delete Project:</h2>
+			<div id="deleteProjects"></div>
+			
 			<form enctype="multipart/form-data" action=".php" method="post">
 				<h2>Edit Item Order:</h2>
-				<div class="dropdown">
-					<button class="drop">Skill 1</button>
-					<div class="dropdown-skills">
-						<a href="#">1</a>
-						<a href="#">2</a>
-						<a href="#">3</a>
-					</div>
-				</div>
-				<div class="dropdown">
-					<button class="drop">Skill 2</button>
-					<div class="dropdown-skills">
-						<a href="#">1</a>
-						<a href="#">2</a>
-						<a href="#">3</a>
-					</div>
-				</div>
-				<div class="dropdown">
-					<button class="drop">Skill 3</button>
-					<div class="dropdown-skills">
-						<a href="#">1</a>
-						<a href="#">2</a>
-						<a href="#">3</a>
-					</div>
-				</div>
+				<div id="orderSkills"></div>
 			</form>
-				<h1>HomePage Management</h1>
+			
+			<h1>HomePage Management</h1>
 
-				<h2>Add New Skill:</h2>
-				Title<input type="text" name="newtitle"><br>
-				Summary<input type="text" name="summary"><br>
+			<h2>Add New Skill:</h2>
+			Title<input type="text" name="newtitle"><br>
+			Summary<input type="text" name="summary"><br>
 
-				<h2>Remove Skill:</h2>
+			<h2>Remove Skill:</h2>
+			<div id="deleteSkills"></div>
+			<h2>Change Home Page Data</h2>
 			<form enctype="multipart/form-data" action=".php" method="post">
-				<input type="radio" value="Skill" name="skillremove1">Skill 1
-				<input type="radio" value="Skill" name="skillremove2">Skill 2
-				<input type="radio" value="Skill" name="skillremove3">Skill 3<br>
-
-				<h2>Change Main Picture:</h2>
-				<input class="button" type="submit" value="Upload Photo">
-
-				<h2>Change Details:</h2>
+				Change Main Picture:
+				<input class="button" type="submit" value="Upload Photo"><br>
 				Name<input type="text" name="name"><br>
 				Description<input type="text" name="namedescription"><br>
 				<input class="button" type="submit" value="Save Changes">
@@ -89,8 +67,28 @@
 		</footer>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
+	<script type="text/javascript" src="HTMLGenerator.js"></script>
 	<script type="text/javascript" src="AdminManager.js"></script>
 	<script>
+		var toPrint = '';
+		function printPage(){
+			//Add sections with skills that need to be selected
+			setAdminSkillsData();
+			toPrint = getAdminSkillsData();
+			document.getElementById('addSkills').innerHTML = toPrint;
+			document.getElementById('deleteSkills').innerHTML = toPrint;
+			//Add section for skills to be ordered
+			setAdminReorderData();
+			toPrint = getAdminReorderData();
+			document.getElementById('orderSkills').innerHTML = toPrint;
+			//Now add project data 
+			setAdminProjectData();
+			toPrint = getAdminProjectData();
+			document.getElementById('deleteProjects').innerHTML = toPrint;
+		}
+		//set printPageContents to run when page loads
+		window.onload = printPage;
+		
 		$(document).ready(function(){		 
 			$('#uploadProject').on('submit', function(event){
 				event.preventDefault();
@@ -165,7 +163,7 @@
 				};	
 			});		 
 		});  
-		/* Citation:
+		/* Function Name: dataURItoBlob
 		 * Source: https://stackoverflow.com/questions/6850276/how-to-convert-dataurl-to-file-object-in-javascript
 		 * Date Written: May 23, 2017
 		 * Author: Matthew

@@ -16,9 +16,9 @@
 */
 var showCaseData = '';
 var homeData = '';
-var adminDeleteSkillsData;
-var adminDeleteProjectData;
-var adminReorderSkillsData;
+var adminSkillsData = '';
+var adminProjectData = '';
+var adminReorderData = '';
 
 /* Uses the global showCaseData variable to format and return usable
  * HTML to the caller for display.
@@ -102,39 +102,57 @@ function setHomeData(){
 	//add skills section now
 	homeData += '</div></div><div class = "my-skills" id="skills">'+skillsSectionBuffer+'</div>';
 }
-/* Uses the global adminDeleteSkillsData variable to format and return usable
+/* Uses the global adminSkillsData variable to format and return usable
  * HTML to the caller for display.
 */
-function getAdminDeleteSkillsData(){
-	
+function getAdminSkillsData(){
+	return adminSkillsData;
 }
 /* Accesses the database when called to retrieve the needed data for the skill delete
- * admin area, then saves it formatted to the adminDeleteSkillsData variable.
+ * admin area, then saves it formatted to the adminSkillsData variable.
 */
-function setAdminDeleteSkillsData(adminDeleteSkillsData){
-	
+function setAdminSkillsData(){
+	adminSkillsData = '';
+	var skills = ['Techno', 'Apples', 'Ripping/Tearing'];
+	//Add checkbox for each skill
+	for(var i = 0; i < skills.length; i++){
+		adminSkillsData += '<input type="checkbox" id="projectSkill'+i+'" name="skill   ">'+skills[i];
+	}
 }
-/* Uses the global adminDeleteProjectData variable to format and return usable
+/* Uses the global adminProjectData variable to format and return usable
  * HTML to the caller for display.
 */
-function getAdminDeleteProjectData(){
-	
+function getAdminProjectData(){
+	return adminProjectData;
 }
 /* Accesses the database when called to retrieve the needed data for the project delete
- * admin area, then saves it formatted to the adminDeleteProjectData variable.
+ * admin area, then saves it formatted to the adminProjectData variable.
 */
-function setAdminDeleteProjectData(adminDeleteProjectData){
-	
+function setAdminProjectData(){
+	adminProjectData = '';
+	var projects = ['This Project', 'C++++++', 'Ripping and Tearing'];
+	//Add checkbox for each skill
+	for(var i = 0; i < projects.length; i++){
+		adminProjectData += '<input type="checkbox" id="projectSkill'+i+'" name="skill   ">'+projects[i];
+	}
 }
-/* Uses the global adminReorderSkillsData variable to format and return usable
+/* Uses the global adminReorderData variable to format and return usable
  * HTML to the caller for display.
 */
-function getAdminReorderSkillsData(){
-	
+function getAdminReorderData(){
+	return adminReorderData;
 }
 /* Accesses the database when called to retrieve the needed data for the reorder skills
- * admin area, then saves it formatted to the adminReorderSkillsData variable.
+ * admin area, then saves it formatted to the adminReorderData variable.
 */
-function setAdminReorderSkillsData(adminReorderSkillsData){
-	
+function setAdminReorderData(){
+	adminReorderData = '';
+	var skills = ['Techno', 'Apples', 'Ripping/Tearing'];
+	for(var i = 0; i < skills.length; i++){
+		adminReorderData += '<div class="dropdown"><button class="drop">'+skills[i]+'</button><div class="dropdown-skills">';
+		for(var j = 0; j < skills.length; j++){
+			adminReorderData += '<a href="#">'+j+'</a>';
+		}
+		adminReorderData += '</div></div>';		
+	}	
 }
