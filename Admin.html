@@ -31,8 +31,8 @@
 				Add Skills: 
 				<div id="addSkills"></div>
 				<br>Add Image:<br>
-				<input class="button" id="projectImage" type="file" name="file"><br><br>
-				<input class="button" type="submit" name="upload" value="upload"><br><br>
+				<input class="button" id="projectImage" type="file" name="projectImage"><br><br>
+				<input class="button" type="submit" name="upload" value="Save New Project"><br><br>
 			</form>
 			
 			<h2>Delete Project:</h2>
@@ -46,19 +46,23 @@
 			<h1>HomePage Management</h1>
 
 			<h2>Add New Skill:</h2>
-			Title<input type="text" name="newtitle"><br>
-			Summary<input type="text" name="summary"><br>
-
+			<form enctype="multipart/form-data" id="addNewSkill" method="post">
+				Title<input type="text" id="newSkillTitle" name="newtitle"><br>
+				Summary<input type="text" id="newSkillDescription" name="summary"><br><br>
+				<input class="button" type="submit" name="saveSkill" value="Save Skill"><br><br>
+			</form>
+			
 			<h2>Remove Skill:</h2>
 			<div id="deleteSkills"></div>
-			<h2>Change Home Page Data</h2>
-			<form enctype="multipart/form-data" action=".php" method="post">
-				Change Main Picture:
-				<input class="button" type="submit" value="Upload Photo"><br>
-				Name<input type="text" name="name"><br>
-				Description<input type="text" name="namedescription"><br>
-				<input class="button" type="submit" value="Save Changes">
-			</form> 
+
+			<form enctype="multipart/form-data" id="uploadHome" method="post">
+				<h2>Change HomePage Data:</h2>
+				Name <input type="text" id="homeTitle" name="homeTitle"><br>
+				Description<input type="text" id="homeDescription" name="homeDescription">
+				<br>Main Image:<br>
+				<input class="button" id="homeImage" type="file" name="homeImage"><br><br>
+				<input class="button" type="submit" name="saveNewHomePage" value="Save New HomePage"><br><br>
+			</form>
 		</div>
 	</section>
 	<div class="container">
@@ -70,6 +74,95 @@
 	<script type="text/javascript" src="HTMLGenerator.js"></script>
 	<script type="text/javascript" src="AdminManager.js"></script>
 	<script>
+		$(document).ready(function(){		 
+			$('#uploadHome').on('submit', function(event){
+				event.preventDefault();
+				//Get image from form and save to site
+				var file = document.querySelector('#homeImage').files[0];
+				//var file = $('#homeImage').prop('files');
+				var reader = new FileReader();
+				var main_image;
+				var image = new Image();
+				reader.readAsDataURL(file);
+				reader.onload = () =>{					
+					image.src = reader.result;	
+					image.onload = () =>{
+						main_image = normalizeImage(image);
+						if(main_image != null){
+							var image_name = $('#homeImage').val();
+							var path = document.getElementById('homeImage').value;
+							//Get file name with extension
+							var file_name;
+							if (path) {
+								var start = (path.indexOf('\\') >= 0 ? path.lastIndexOf('\\') : path.lastIndexOf('/'));
+								file_name = path.substring(start);
+								if (file_name.indexOf('\\') === 0 || file_name.indexOf('/') === 0) {
+									file_name = file_name.substring(1);
+								}
+							}
+							//contains data for database only
+							var data = {
+							"title" : document.getElementById("homeTitle").value,
+							"description" : document.getElementById("homeDescription").value,
+							"fileName" : file_name
+							};							
+							var dataString = JSON.stringify(data);
+							//Now send the ShowCase data so it can be added to the database
+							$.ajax({
+								url:"addHomePageData.php",
+								method: "POST",
+								data: {myData: dataString},
+								success:function(data){
+									//alert(data);
+								}
+							});
+							//Now send the photos to the server to be saved for future hosting						
+							var formData = new FormData();
+							formData.append('main', dataURItoBlob(main_image), file_name);
+							//Now send the ShowCase photos so it can be saved to the server
+							$.ajax({
+								url:"addHomePagePhoto.php",
+								method: "POST",
+								data: formData,
+								processData: false,
+								contentType: false,
+								success:function(data){
+									//alert(data);
+								},
+								error: function(XMLHttpRequest, textStatus, errorThrown) {
+									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
+								}
+							});
+						}else{
+							alert("Invalid Photo Uploaded");
+						}
+					};					
+				};	
+			});		 
+		}); 
+		
+		
+		$(document).ready(function(){		 
+			$('#addNewSkill').on('submit', function(event){
+				event.preventDefault();
+				//contains data for database only
+				var data = {
+				"title" : document.getElementById("newSkillTitle").value,
+				"description" : document.getElementById("newSkillDescription").value
+				};							
+				var dataString = JSON.stringify(data);
+				//Now send the ShowCase data so it can be added to the database
+				$.ajax({
+					url:"addNewSkillData.php",
+					method: "POST",
+					data: {myData: dataString},
+					success:function(data){
+						alert(data);
+					}
+				});
+			});		 
+		});  
+		
 		var toPrint = '';
 		function printPage(){
 			//Add sections with skills that need to be selected
@@ -93,7 +186,7 @@
 			$('#uploadProject').on('submit', function(event){
 				event.preventDefault();
 				//Get image from form and make copies for db
-				var file = document.querySelector('input[type=file]').files[0];
+				var file = document.querySelector('#projectImage').files[0];
 				var reader = new FileReader();
 				var main_image, mobile_image, thumbnail;
 				var image = new Image();
@@ -103,7 +196,6 @@
 					image.onload = () =>{
 						main_image = normalizeImage(image);
 						if(main_image != null){
-							//alert("Valid Photo");
 							mobile_image = createMobileImageCopy(main_image);
 							thumbnail = createThumbNailCopy(main_image);
 							var image_name = $('#projectImage').val();
@@ -133,11 +225,10 @@
 								method: "POST",
 								data: {myData: dataString},
 								success:function(data){
-									alert(data);
+									//alert(data);
 								}
 							});
 							//Now send the photos to the server to be saved for future hosting						
-							//var blob = dataURItoBlob(main_image);
 							var formData = new FormData();
 							formData.append('main', dataURItoBlob(main_image), file_name);
 							formData.append('mobile', dataURItoBlob(mobile_image), "M_"+file_name);
@@ -150,7 +241,7 @@
 								processData: false,
 								contentType: false,
 								success:function(data){
-									alert(data);
+									//alert(data);
 								},
 								error: function(XMLHttpRequest, textStatus, errorThrown) {
 									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);

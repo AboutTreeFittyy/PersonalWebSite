@@ -1,9 +1,8 @@
 CREATE TABLE `misc` (
- `misc_id` int(11) NOT NULL,
+ `misc_id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
  `Name` text NOT NULL,
  `About` text NOT NULL,
- `Image` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
- PRIMARY KEY (`misc_id`)
+ `Image` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 );
 
 CREATE TABLE `showcase` (
@@ -15,10 +14,9 @@ CREATE TABLE `showcase` (
 );
 
 CREATE TABLE `skill` (
- `skill_id` int(11) NOT NULL,
+ `skill_id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
  `Title` text NOT NULL,
- `Description` text NOT NULL,
- PRIMARY KEY (`skill_id`)
+ `Description` text NOT NULL
 );
 
 CREATE TABLE `showcase_skill` (
