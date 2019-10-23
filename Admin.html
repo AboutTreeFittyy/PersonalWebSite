@@ -28,7 +28,7 @@
 				<h2>Add New Project:</h2>
 				Title <input type="text" id="projectTitle" name="title"><br>
 				Description<input type="text" id="projectDescription" name="description"><br>
-				Add Skills: 
+				Select Skills for Project: 
 				<div id="addSkills"></div>
 				<br>Add Image:<br>
 				<input class="button" id="projectImage" type="file" name="projectImage"><br><br>
@@ -38,7 +38,7 @@
 			<form enctype="multipart/form-data" id="deleteProject" method="post">
 				<h2>Delete Project:</h2>
 				<div id="deleteProjects"></div>
-				<input class="button" type="submit" name="deleteProject" value="Delete Project(s)"><br><br>
+				<input class="button" type="submit" name="deleteProject" value="Delete Selected Project(s)"><br><br>
 			</form>
 			
 			<form enctype="multipart/form-data" action=".php" method="post">
@@ -47,17 +47,20 @@
 			</form>
 			
 			<h1>HomePage Management</h1>
-
-			<h2>Add New Skill:</h2>
+			
 			<form enctype="multipart/form-data" id="addNewSkill" method="post">
+				<h2>Add New Skill:</h2>
 				Title<input type="text" id="newSkillTitle" name="newtitle"><br>
 				Summary<input type="text" id="newSkillDescription" name="summary"><br><br>
 				<input class="button" type="submit" name="saveSkill" value="Save Skill"><br><br>
-			</form>
+			</form>			
 			
-			<h2>Remove Skill:</h2>
-			<div id="deleteSkills"></div>
-
+			<form enctype="multipart/form-data" id="deleteSkill" method="post">
+				<h2>Remove Skill:</h2>
+				<div id="deleteSkills"></div>
+				<input class="button" type="submit" name="deleteSkill" value="Delete Selected Skill(s)"><br><br>
+			</form>			
+			
 			<form enctype="multipart/form-data" id="uploadHome" method="post">
 				<h2>Change HomePage Data:</h2>
 				Name <input type="text" id="homeTitle" name="homeTitle"><br>
@@ -77,15 +80,46 @@
 	<script type="text/javascript" src="HTMLGenerator.js"></script>
 	<script type="text/javascript" src="AdminManager.js"></script>
 	<script>
+		$(document).ready(function(){		 
+			$('#deleteSkill').on('submit', function(event){
+				event.preventDefault();
+				//Get data for projects so we know which ids to look for
+				var skillData = getAdminSkillsData();
+				for(var i = 0; i < skillData.length; i++){
+					//Check if that id exists
+					if(document.getElementById("deleteSkill"+skillData[i].skill_id)){
+						//Make sure its checked, if it is then send an ajax request to delete it
+						if(document.getElementById("deleteSkill"+skillData[i].skill_id).checked){
+							$.ajax({
+								url:"deleteSkill.php",
+								method: "POST",
+								data: {myData: JSON.stringify(skillData[i].skill_id)},
+								success:function(data){
+									alert(data);
+								},
+								error: function(XMLHttpRequest, textStatus, errorThrown) {
+									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
+								}
+							});
+							//stop displaying the div from the page as its gone now for that skill everywhere
+							document.getElementById("psd"+skillData[i].skill_id).style.display = 'none';
+							document.getElementById("dsd"+skillData[i].skill_id).style.display = 'none';
+						}					
+					}
+				}
+			});		 
+		}); 
+		
 		
 		$(document).ready(function(){		 
 			$('#deleteProject').on('submit', function(event){
 				event.preventDefault();
-				//LIMIT of 20 projects, need to clean database after this reached
+				//Get data for projects so we know which ids to look for
 				var projectData = getAdminProjectData();
 				for(var i = 0; i < projectData.length; i++){
 					//Check if that id exists
 					if(document.getElementById("deleteProjectSkill"+projectData[i].showcase_id)){
+						//Make sure its checked, if it is then send an ajax request to delete it
 						if(document.getElementById("deleteProjectSkill"+projectData[i].showcase_id).checked){
 							$.ajax({
 								url:"deleteProject.php",
@@ -98,6 +132,8 @@
 									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
 								}
 							});
+							//stop displaying the div from the page as its gone now
+							document.getElementById("dps"+projectData[i].showcase_id).style.display = 'none';
 						}					
 					}
 				}
@@ -197,9 +233,9 @@
 		function printPage(){
 			//Add sections with skills that need to be selected
 			setAdminSkillsData();
-			toPrint = getAdminSkillsData();
-			document.getElementById('addSkills').innerHTML = toPrint;
-			document.getElementById('deleteSkills').innerHTML = toPrint;
+			//toPrint = getAdminSkillsData();
+			//document.getElementById('addSkills').innerHTML = toPrint;
+			//document.getElementById('deleteSkills').innerHTML = toPrint;
 			//Add section for skills to be ordered
 			setAdminReorderData();
 			toPrint = getAdminReorderData();

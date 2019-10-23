@@ -112,12 +112,25 @@ function getAdminSkillsData(){
  * admin area, then saves it formatted to the adminSkillsData variable.
 */
 function setAdminSkillsData(){
-	adminSkillsData = '';
-	var skills = ['Techno', 'Apples', 'Ripping/Tearing'];
-	//Add checkbox for each skill
-	for(var i = 0; i < skills.length; i++){
-		adminSkillsData += '<input type="checkbox" id="setProjectSkill'+i+'" name="skill   ">'+skills[i];
-	}
+	var ajax = new XMLHttpRequest();
+	var buf = '';
+	ajax.open("GET", "getSkillData.php", true);
+	ajax.send();
+	ajax.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			adminSkillsData = JSON.parse(this.responseText);
+			for(var i = 0; i < adminSkillsData.length; i++){
+				buf += '<div id="psd'+adminSkillsData[i].skill_id+'"><input type="checkbox" id="setProjectSkill'+adminSkillsData[i].skill_id+'" name="skill">'+adminSkillsData[i].Title+'</div>';
+			}
+			document.getElementById('addSkills').innerHTML = buf;
+			//Now do the skill delete section
+			buf = '';
+			for(var i = 0; i < adminSkillsData.length; i++){
+				buf += '<div id="dsd'+adminSkillsData[i].skill_id+'"><input type="checkbox" id="deleteSkill'+adminSkillsData[i].skill_id+'" name="skill">'+adminSkillsData[i].Title+'</div>';
+			}
+			document.getElementById('deleteSkills').innerHTML = buf;
+		}
+	};
 }
 /* Uses the global adminProjectData variable to format and return usable
  * HTML to the caller for display.
@@ -129,21 +142,18 @@ function getAdminProjectData(){
  * admin area, then saves it formatted to the adminProjectData variable.
 */
 function setAdminProjectData(){
-	adminProjectData = '';
-	var projects = ['This Project', 'C++++++', 'Ripping and Tearing'];
-	
 	//get data with ajax
 	var ajax = new XMLHttpRequest();
+	var buf = '';
 	ajax.open("GET", "getProjectData.php", true);
 	ajax.send();
 	ajax.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			var data = JSON.parse(this.responseText);
-			for(var i = 0; i < data.length; i++){
-				adminProjectData += '<input type="checkbox" id="deleteProjectSkill'+data[i].showcase_id+'" name="skill">'+data[i].Title;
+			adminProjectData = JSON.parse(this.responseText);
+			for(var i = 0; i < adminProjectData.length; i++){
+				buf += '<div id="dps'+adminProjectData[i].showcase_id+'"><input type="checkbox" id="deleteProjectSkill'+adminProjectData[i].showcase_id+'" name="skill" value="prep">'+adminProjectData[i].Title+'</div>';
 			}
-			document.getElementById('deleteProjects').innerHTML = adminProjectData;
-			adminProjectData = data;
+			document.getElementById('deleteProjects').innerHTML = buf;
 		}
 	};
 }
