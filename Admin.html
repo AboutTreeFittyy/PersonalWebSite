@@ -41,8 +41,8 @@
 				<input class="button" type="submit" name="deleteProject" value="Delete Selected Project(s)"><br><br>
 			</form>
 			
-			<form enctype="multipart/form-data" action=".php" method="post">
-				<h2>Edit Item Order:</h2>
+			<form enctype="multipart/form-data" id="reorderSkills" method="post">
+				<h2>Edit Project Order:</h2>
 				<div id="orderSkills"></div>
 			</form>
 			
@@ -80,6 +80,42 @@
 	<script type="text/javascript" src="HTMLGenerator.js"></script>
 	<script type="text/javascript" src="AdminManager.js"></script>
 	<script>
+		function changeOrder(id, order){
+			//var orderData = getAdminProjectData();
+			//Get project info of two that are chaning orders
+			var thisTitle = document.getElementById("dds"+id);
+			var otherTitle = document.querySelector("button[value='"+order+"']");	
+			//save the current order of the title clicked
+			var curOrder = thisTitle.value;
+			//swap the values of the projects
+			thisTitle.value = otherTitle.value;
+			otherTitle.value = curOrder;
+			//switch text displayed on buttons
+			thisTitle.innerText = "["+(1+Number(order))+"] "+thisTitle.innerText.substring(4);
+			otherTitle.innerText = "["+(1+Number(curOrder))+"] "+otherTitle.innerText.substring(4);
+			//Okay so actually should just ajax request this when clicked
+			var data = {
+			"from_id" : Number(id),
+			"from_order" : order,
+			"to_id" : Number(otherTitle.id.substring(3)),
+			"to_order" : Number(curOrder)
+			};							
+			var dataString = JSON.stringify(data);
+			$.ajax({
+				url:"changeProjectOrder.php",
+				method: "POST",
+				data: {myData: dataString},
+				success:function(data){
+					alert(data);
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
+				}
+			});
+			//reload the div so that it updates properly
+			setAdminProjectData();
+		}		
+		
 		$(document).ready(function(){		 
 			$('#deleteSkill').on('submit', function(event){
 				event.preventDefault();
@@ -108,8 +144,7 @@
 					}
 				}
 			});		 
-		}); 
-		
+		}); 		
 		
 		$(document).ready(function(){		 
 			$('#deleteProject').on('submit', function(event){
@@ -126,7 +161,7 @@
 								method: "POST",
 								data: {myData: JSON.stringify(projectData[i].showcase_id)},
 								success:function(data){
-									alert(data);
+									//alert(data);
 								},
 								error: function(XMLHttpRequest, textStatus, errorThrown) {
 									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
@@ -205,8 +240,7 @@
 					};					
 				};	
 			});		 
-		}); 
-		
+		}); 		
 		
 		$(document).ready(function(){		 
 			$('#addNewSkill').on('submit', function(event){
@@ -233,13 +267,6 @@
 		function printPage(){
 			//Add sections with skills that need to be selected
 			setAdminSkillsData();
-			//toPrint = getAdminSkillsData();
-			//document.getElementById('addSkills').innerHTML = toPrint;
-			//document.getElementById('deleteSkills').innerHTML = toPrint;
-			//Add section for skills to be ordered
-			setAdminReorderData();
-			toPrint = getAdminReorderData();
-			document.getElementById('orderSkills').innerHTML = toPrint;
 			//Now add project data 
 			setAdminProjectData();
 		}
@@ -273,9 +300,9 @@
 									file_name = file_name.substring(1);
 								}
 							}
-							document.getElementById("test1").src = main_image;
-							document.getElementById("test2").src = mobile_image;
-							document.getElementById("test3").src = thumbnail;
+							//document.getElementById("test1").src = main_image;
+							//document.getElementById("test2").src = mobile_image;
+							//document.getElementById("test3").src = thumbnail;
 							//contains data for database only
 							var data = {
 							"title" : document.getElementById("projectTitle").value,
@@ -289,7 +316,7 @@
 								method: "POST",
 								data: {myData: dataString},
 								success:function(data){
-									//alert(data);
+									alert(data);
 								}
 							});
 							//Now send the photos to the server to be saved for future hosting						

@@ -1,13 +1,12 @@
 /* FileName: HTMLGenerator.js
  * Author: Mathew Boland
- * Date Modified: October 16th, 2019
+ * Date Modified: October 22th, 2019
  * Description: Class with accessors to the sites database.
  * Using set functions to retrieve the data from the database
  * needed for that particular part of the site. Then getters
  * are used to retrieve formatted versions of the data for the 
  * site. Data is stored globally and accessed this way to limit
  * the sites need to access the database.
- * NOTE: Currently setters are passed data until the database is set up.
 */
 
 /* Global variables
@@ -18,7 +17,6 @@ var showCaseData = '';
 var homeData = '';
 var adminSkillsData = '';
 var adminProjectData = '';
-var adminReorderData = '';
 
 /* Uses the global showCaseData variable to format and return usable
  * HTML to the caller for display.
@@ -154,26 +152,45 @@ function setAdminProjectData(){
 				buf += '<div id="dps'+adminProjectData[i].showcase_id+'"><input type="checkbox" id="deleteProjectSkill'+adminProjectData[i].showcase_id+'" name="skill" value="prep">'+adminProjectData[i].Title+'</div>';
 			}
 			document.getElementById('deleteProjects').innerHTML = buf;
+			buf = '';
+			//Check if valid amount of skills to order
+			if(adminProjectData.length < 2){
+				buf = "Not Enough Projects To Reorder"
+			}else{
+				var funcBuf = '';
+				for(var i = 0; i < adminProjectData.length; i++){
+					//cycle through projects to display them in order
+					for(var k = 0; k < adminProjectData.length; k++){
+						if(adminProjectData[k].Showcase_Order == i){
+							buf += '<div class="dropdown"><button class="drop" id="dds'+adminProjectData[k].showcase_id+'" value="'+i+'">['+(i+1)+'] '+adminProjectData[k].Title+'</button><div class="dropdown-skills">';
+							for(var j = 0; j < adminProjectData.length; j++){
+								//Why allow them to reorder to the same stuff
+								if(i!=j){
+									funcBuf = "changeOrder('"+adminProjectData[k].showcase_id+"',"+j+")";
+									buf += '<a onClick="'+funcBuf+'">'+(j+1)+'</a>';
+								}					
+							}
+							buf += '</div></div>';
+						}
+					}
+				}
+			}
+			document.getElementById('orderSkills').innerHTML = buf;
 		}
 	};
 }
-/* Uses the global adminReorderData variable to format and return usable
- * HTML to the caller for display.
-*/
-function getAdminReorderData(){
-	return adminReorderData;
-}
-/* Accesses the database when called to retrieve the needed data for the reorder skills
- * admin area, then saves it formatted to the adminReorderData variable.
-*/
-function setAdminReorderData(){
-	adminReorderData = '';
-	var skills = ['Techno', 'Apples', 'Ripping/Tearing'];
-	for(var i = 0; i < skills.length; i++){
-		adminReorderData += '<div class="dropdown"><button class="drop">'+skills[i]+'</button><div class="dropdown-skills">';
-		for(var j = 0; j < skills.length; j++){
-			adminReorderData += '<a href="#">'+j+'</a>';
-		}
-		adminReorderData += '</div></div>';		
-	}	
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
