@@ -116,7 +116,7 @@ function setAdminSkillsData(){
 	var skills = ['Techno', 'Apples', 'Ripping/Tearing'];
 	//Add checkbox for each skill
 	for(var i = 0; i < skills.length; i++){
-		adminSkillsData += '<input type="checkbox" id="projectSkill'+i+'" name="skill   ">'+skills[i];
+		adminSkillsData += '<input type="checkbox" id="setProjectSkill'+i+'" name="skill   ">'+skills[i];
 	}
 }
 /* Uses the global adminProjectData variable to format and return usable
@@ -131,10 +131,21 @@ function getAdminProjectData(){
 function setAdminProjectData(){
 	adminProjectData = '';
 	var projects = ['This Project', 'C++++++', 'Ripping and Tearing'];
-	//Add checkbox for each skill
-	for(var i = 0; i < projects.length; i++){
-		adminProjectData += '<input type="checkbox" id="projectSkill'+i+'" name="skill   ">'+projects[i];
-	}
+	
+	//get data with ajax
+	var ajax = new XMLHttpRequest();
+	ajax.open("GET", "getProjectData.php", true);
+	ajax.send();
+	ajax.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var data = JSON.parse(this.responseText);
+			for(var i = 0; i < data.length; i++){
+				adminProjectData += '<input type="checkbox" id="deleteProjectSkill'+data[i].showcase_id+'" name="skill">'+data[i].Title;
+			}
+			document.getElementById('deleteProjects').innerHTML = adminProjectData;
+			adminProjectData = data;
+		}
+	};
 }
 /* Uses the global adminReorderData variable to format and return usable
  * HTML to the caller for display.

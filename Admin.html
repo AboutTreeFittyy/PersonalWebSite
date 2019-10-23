@@ -35,8 +35,11 @@
 				<input class="button" type="submit" name="upload" value="Save New Project"><br><br>
 			</form>
 			
-			<h2>Delete Project:</h2>
-			<div id="deleteProjects"></div>
+			<form enctype="multipart/form-data" id="deleteProject" method="post">
+				<h2>Delete Project:</h2>
+				<div id="deleteProjects"></div>
+				<input class="button" type="submit" name="deleteProject" value="Delete Project(s)"><br><br>
+			</form>
 			
 			<form enctype="multipart/form-data" action=".php" method="post">
 				<h2>Edit Item Order:</h2>
@@ -74,6 +77,33 @@
 	<script type="text/javascript" src="HTMLGenerator.js"></script>
 	<script type="text/javascript" src="AdminManager.js"></script>
 	<script>
+		
+		$(document).ready(function(){		 
+			$('#deleteProject').on('submit', function(event){
+				event.preventDefault();
+				//LIMIT of 20 projects, need to clean database after this reached
+				var projectData = getAdminProjectData();
+				for(var i = 0; i < projectData.length; i++){
+					//Check if that id exists
+					if(document.getElementById("deleteProjectSkill"+projectData[i].showcase_id)){
+						if(document.getElementById("deleteProjectSkill"+projectData[i].showcase_id).checked){
+							$.ajax({
+								url:"deleteProject.php",
+								method: "POST",
+								data: {myData: JSON.stringify(projectData[i].showcase_id)},
+								success:function(data){
+									alert(data);
+								},
+								error: function(XMLHttpRequest, textStatus, errorThrown) {
+									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
+								}
+							});
+						}					
+					}
+				}
+			});		 
+		}); 
+		
 		$(document).ready(function(){		 
 			$('#uploadHome').on('submit', function(event){
 				event.preventDefault();
@@ -176,8 +206,6 @@
 			document.getElementById('orderSkills').innerHTML = toPrint;
 			//Now add project data 
 			setAdminProjectData();
-			toPrint = getAdminProjectData();
-			document.getElementById('deleteProjects').innerHTML = toPrint;
 		}
 		//set printPageContents to run when page loads
 		window.onload = printPage;
