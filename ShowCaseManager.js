@@ -11,6 +11,10 @@
 function switchImage(param){
 	//Get which image it should be set to from param, then set it
 	var path = "images/"+param;
+	//check for mobile
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+		var path = "images/M_"+param;
+	}
 	var image = new Image();				
 	image.src = path;	
 	document.getElementById("current-image").src = image.src;

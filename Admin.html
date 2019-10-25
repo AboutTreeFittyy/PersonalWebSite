@@ -22,7 +22,7 @@
 	<section class="my-form" id="my-form">
 		<div class="container">
 			<h1>ShowCase Management</h1>
-			<div id="imageTest"><img id="test1"><img id="test2"><img id="test3"></div>
+			<div id="imageTest">Before<img id="test1">After<img id="test2"><img id="test3"></div>
 			
 			<form enctype="multipart/form-data" id="uploadProject" method="post" data-parsley-validate="">
 				<h2>Add New Project:</h2>
@@ -232,10 +232,20 @@
 		$(document).ready(function(){		 
 			$('#uploadProject').on('submit', function(event){
 				event.preventDefault();
+				var path = document.getElementById('projectImage').value;
+				//Get file name with extension
+				var file_name;
+				if (path) {
+					var start = (path.indexOf('\\') >= 0 ? path.lastIndexOf('\\') : path.lastIndexOf('/'));
+					file_name = path.substring(start);
+					if (file_name.indexOf('\\') === 0 || file_name.indexOf('/') === 0) {
+						file_name = file_name.substring(1);
+					}
+				}
 				//Get image from form and make copies for db
 				var file = document.querySelector('#projectImage').files[0];
 				var reader = new FileReader();
-				var main_image, mobile_image, thumbnail;
+				var main_image;
 				var image = new Image();
 				reader.readAsDataURL(file);
 				reader.onload = () =>{					
@@ -243,22 +253,39 @@
 					image.onload = () =>{
 						main_image = normalizeImage(image);
 						if(main_image != null){
-							mobile_image = createMobileImageCopy(main_image);
-							thumbnail = createThumbNailCopy(main_image);
-							var image_name = $('#projectImage').val();
-							var path = document.getElementById('projectImage').value;
-							//Get file name with extension
-							var file_name;
-							if (path) {
-								var start = (path.indexOf('\\') >= 0 ? path.lastIndexOf('\\') : path.lastIndexOf('/'));
-								file_name = path.substring(start);
-								if (file_name.indexOf('\\') === 0 || file_name.indexOf('/') === 0) {
-									file_name = file_name.substring(1);
-								}
-							}
-							//document.getElementById("test1").src = main_image;
-							//document.getElementById("test2").src = mobile_image;
-							//document.getElementById("test3").src = thumbnail;
+							var mImage = new Image();
+							var mobile_image;
+							mImage.src = main_image;
+							//wait for mobile image to load
+							mImage.onload = () =>{								
+								mobile_image = createMobileImageCopy(mImage);
+								var tnImage = new Image();
+								var thumbnail;
+								tnImage.src = main_image;
+								//wait for thumbnail image to load
+								tnImage.onload = () =>{
+									thumbnail = createThumbNailCopy(tnImage);							
+									//Now send the photos to the server to be saved for future hosting									
+									var formData = new FormData();
+									formData.append('main', dataURItoBlob(main_image), file_name);
+									formData.append('mobile', dataURItoBlob(mobile_image), "M_"+file_name);
+									formData.append('thumb', dataURItoBlob(thumbnail), "TN_"+file_name);
+									//Now send the ShowCase photos so it can be saved to the server
+									$.ajax({
+										url:"addShowCasePhotos.php",
+										method: "POST",
+										data: formData,
+										processData: false,
+										contentType: false,
+										success:function(data){
+											//alert(data);
+										},
+										error: function(XMLHttpRequest, textStatus, errorThrown) {
+											alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
+										}
+									});
+								};
+							};
 							//contains data for database only
 							var data = {
 							"title" : document.getElementById("projectTitle").value,
@@ -274,26 +301,7 @@
 								success:function(data){
 									//alert(data);
 								}
-							});
-							//Now send the photos to the server to be saved for future hosting						
-							var formData = new FormData();
-							formData.append('main', dataURItoBlob(main_image), file_name);
-							formData.append('mobile', dataURItoBlob(mobile_image), "M_"+file_name);
-							formData.append('thumb', dataURItoBlob(thumbnail), "TN_"+file_name);
-							//Now send the ShowCase photos so it can be saved to the server
-							$.ajax({
-								url:"addShowCasePhotos.php",
-								method: "POST",
-								data: formData,
-								processData: false,
-								contentType: false,
-								success:function(data){
-									//alert(data);
-								},
-								error: function(XMLHttpRequest, textStatus, errorThrown) {
-									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
-								}
-							});
+							});							
 							//Now save the skills with the project
 							var skills = getAdminSkillsData();
 							//cycle through skills checkboxes
@@ -311,6 +319,7 @@
 										data: {myData: dataString},
 										success:function(data){
 											//alert(data);
+											setAdminProjectData();
 										},
 										error: function(XMLHttpRequest, textStatus, errorThrown) {
 											alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);

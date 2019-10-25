@@ -43,8 +43,12 @@ function setShowCaseData(){
 		var quoName = "'"+pjImageName[i]+"'";
 		tnBuffer += '<img src="images/TN_'+pjImageName[i]+'" class="my-screen" id="img1" onClick="switchImage('+quoName+')">';
 		//Add all the projects to display below the gallery
-		//First insert the image
-		projectBuffer += '<div class="my-showcase"><div class="my-showcase-left"><img id="my-screen" src="images/'+pjImageName[i]+'" class="my-screen"></div>';
+		//First insert the image depending on if viewed mobile or in desktop
+		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+			projectBuffer += '<div class="my-showcase"><div class="my-showcase-left"><img id="my-screen" src="images/M_'+pjImageName[i]+'" class="my-screen"></div>';
+		} else{
+			projectBuffer += '<div class="my-showcase"><div class="my-showcase-left"><img id="my-screen" src="images/'+pjImageName[i]+'" class="my-screen"></div>';
+		}		
 		//Now insert the details
 		projectBuffer += '<div class="my-showcase-right">Title</br><a href="#my-header">Back to top</a></br><a href="https://github.com/AboutTreeFittyy">Project on GitHub</a></br>';				
 		for(var j = 0; j < skills.length; j++){
@@ -54,7 +58,12 @@ function setShowCaseData(){
 		projectBuffer += '</div><div class="my-showcase-bottom"><div class="my-details">'+descriptions[i]+'</div></div></div>';			
 	}	
 	showCaseData = '<div class="my-details">Feel free to browse and check out some of the projects Ive made</div><div class="my-top-showcase" id="mts"><div class="image-container"';
-	showCaseData += 'id="image-container"><img id="current-image" src="images/'+pjImageName[0]+'" class="my-screen"><div class="caption-container"><div id="my-caption" class="my-caption">';
+	//check again for mobile
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+		showCaseData += 'id="image-container"><img id="current-image" src="images/M_'+pjImageName[0]+'" class="my-screen"><div class="caption-container"><div id="my-caption" class="my-caption">';
+	} else{
+		showCaseData += 'id="image-container"><img id="current-image" src="images/'+pjImageName[0]+'" class="my-screen"><div class="caption-container"><div id="my-caption" class="my-caption">';
+	}	
 	showCaseData += caption[0]+'</div><div id="my-info" class="my-info">'+captionInfo[0]+'</div></div></div><div id="my-thumbnail" class ="my-thumbnail">';
 	showCaseData += tnBuffer+'</div></div><div class="my-details">Scroll down to learn more</div>';
 	showCaseData += projectBuffer +footer;

@@ -11,13 +11,11 @@
  * of the website. It's important features are reducing the quality of the 
  * and the height of the image to be more portable.
 */
-function createMobileImageCopy(dataURL){
-	var image = new Image();
-	image.src = dataURL;
+function createMobileImageCopy(image){
 	//Create a canvas to use for adjusting the image with 
 	var canvas = document.createElement("canvas");
-	canvas.width = image.width*0.3;
-	canvas.height = image.height*0.3;
+	canvas.width = image.width*0.5;
+	canvas.height = image.height*0.5;
 	var ctx = canvas.getContext("2d");
 	ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 	//Return the image made on the canvas
@@ -28,9 +26,7 @@ function createMobileImageCopy(dataURL){
  * to improve performance. A mobile version of this function may be made later
  * to test if it can further improve mobile performance.
 */
-function createThumbNailCopy(dataURL){
-	var image = new Image();
-	image.src = dataURL;
+function createThumbNailCopy(image){
 	//Create a canvas to use for adjusting the image with 
 	var canvas = document.createElement("canvas");
 	canvas.width = image.width*0.2;
@@ -48,7 +44,7 @@ function createThumbNailCopy(dataURL){
 function normalizeImage(image){
 	var scale = image.height/image.width;
 	//alert("Before Height:"+image.height+", Image Width: "+image.width+"");
-	if(image.height > image.width || image.width < 1600 || image.height < 900){
+	if(image.height > image.width || image.width < 700 || image.height < 500){
 		alert("After Height:"+image.height+", Image Width: "+image.width+" THIS BLOWS");
 		return null; // this image would look terrible in the gallery
 	}
