@@ -137,9 +137,13 @@
 									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
 								}
 							});
-							//stop displaying the div from the page as its gone now for that skill everywhere
+							//Remove skill from page and uncheck it
 							document.getElementById("psd"+skillData[i].skill_id).style.display = 'none';
 							document.getElementById("dsd"+skillData[i].skill_id).style.display = 'none';
+							document.getElementById("deleteSkill"+skillData[i].skill_id).checked = false;
+							//make sure its gone from project section
+							document.getElementById("setProjectSkill"+skillData[i].skill_id).checked = false;
+							document.getElementById("setProjectSkill"+skillData[i].skill_id).display = 'none';
 						}					
 					}
 				}
@@ -161,14 +165,15 @@
 								method: "POST",
 								data: {myData: JSON.stringify(projectData[i].showcase_id)},
 								success:function(data){
-									//alert(data);
+									alert(data);
 								},
 								error: function(XMLHttpRequest, textStatus, errorThrown) {
 									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
 								}
 							});
-							//stop displaying the div from the page as its gone now
+							//stop displaying the div from the page as its gone now and uncheck the box
 							document.getElementById("dps"+projectData[i].showcase_id).style.display = 'none';
+							document.getElementById("deleteProjectSkill"+projectData[i].showcase_id).checked = false;
 						}					
 					}
 				}
@@ -316,7 +321,7 @@
 								method: "POST",
 								data: {myData: dataString},
 								success:function(data){
-									alert(data);
+									//alert(data);
 								}
 							});
 							//Now send the photos to the server to be saved for future hosting						
@@ -338,6 +343,32 @@
 									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
 								}
 							});
+							//Now save the skills with the project
+							var skills = getAdminSkillsData();
+							//cycle through skills checkboxes
+							for(var i = 0; i < skills.length; i++ ){
+								//see if skill is selected before adding it to project
+								if(document.getElementById("setProjectSkill"+skills[i].skill_id).checked){
+									var data = {
+									"id" : skills[i].skill_id
+									};	
+									var dataString = JSON.stringify(data);
+									//Now send the ShowCase data so it can be added to the database
+									$.ajax({
+										url:"joinSkillProject.php",
+										method: "POST",
+										data: {myData: dataString},
+										success:function(data){
+											//alert(data);
+										},
+										error: function(XMLHttpRequest, textStatus, errorThrown) {
+											alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
+										}
+									});
+									//Now uncheck the checkbox
+									document.getElementById("setProjectSkill"+skills[i].skill_id).checked = false;
+								}
+							}
 						}else{
 							alert("Invalid Photo Uploaded");
 						}
