@@ -21,10 +21,16 @@
  }
  
  #my-header{
+	 width: 100%;
+	 top: 0;
+     left: 0;
+	 overflow: hidden;
 	 border-bottom:3px solid black;
 	 background-color:#124f8c;
 	 padding-bottom:15px;
 	 padding-top:25px;
+	 position: fixed;
+	 z-index: 1000;
  }
  
  #my-header ul{
@@ -34,8 +40,7 @@
  }
  
  #my-header li{
-	 float:left;
-	 
+	 float:left;	 
 	 padding-right: 5%;
 	 display:inline;
  }
@@ -53,10 +58,7 @@
 	 margin:auto;
 	 width:100%;
 	 border-top: 2px solid black;
- }
- 
- #my-form{
-	 
+	 position: relative;
  }
  
  #my-canvas{
@@ -256,7 +258,6 @@
  
  /*Home page stuff*/
  .my-home{
-	 height:flex;
 	 display:flex;
 	 position:relative;
 	 overflow:hidden;

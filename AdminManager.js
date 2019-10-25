@@ -61,6 +61,7 @@ function normalizeImage(image){
 	//Return the image made on the canvas
 	return canvas.toDataURL("image/jpeg", 0.9);//};
 }
+
 function changeOrder(id, order){
 	//var orderData = getAdminProjectData();
 	//Get project info of two that are chaning orders
@@ -96,12 +97,20 @@ function changeOrder(id, order){
 	//reload the div so that it updates properly
 	setAdminProjectData();
 }
+function fixHeader(){
+	$head = $("#my-header");
+	var bottom = $head.position().top + $head.offset().top + $head.outerHeight(true);
+	$("#pageData").css({ top: bottom+'px', position: 'relative' });
+}
+window.onresize = fixHeader;
+
 function printPage(){
 	var toPrint = '';
 	//Add sections with skills that need to be selected
 	setAdminSkillsData();
 	//Now add project data 
 	setAdminProjectData();
+	fixHeader();
 }
 //set printPageContents to run when page loads
 window.onload = printPage;

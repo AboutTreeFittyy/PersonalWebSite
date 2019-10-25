@@ -8,7 +8,7 @@
 
 <body>
 	<header id="my-header">
-		<div class="container" id="top">
+		<div class="container">
 			<ul><li>
 				<a href="Home.html">Home</a></li><li>
 				<a href="ShowCase.html">Projects</a></li><li>				
@@ -19,28 +19,12 @@
 			</li></ul>
 		</div>		
 	</header>
-	<div class="container" id="pageData"></div>
-	<div class="container">
-		<footer id="my-footer">
-			<p>Author: Mathew Boland - Last Updated:October 17, 2019</p>
-		</footer>
-	</div>	
+	<div class="container" id="pageData"></div>	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
-	<script type="text/javascript" src="jquery.sticky.js"></script>
-	<script type="text/javascript" src="ShowCaseManager.js"></script>
 	<script type="text/javascript" src="HTMLGenerator.js"></script>
+	<script type="text/javascript" src="ShowCaseManager.js"></script>	
 	<script type="text/javascript">
-	$(window).load(function(){
-	  $("#my-header").sticky({ topSpacing: 0, center:true, className:"my-header" });
-	});
-	var toPrint = '';
-	function printPage(){
-		setShowCaseData();
-		toPrint = getShowCaseData();
-		document.getElementById('pageData').innerHTML = toPrint;
-	}
-	//set printPageContents to run when page loads
-	printPage();
+		
 	</script>
 </body>
 </html>

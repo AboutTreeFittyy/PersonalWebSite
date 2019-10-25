@@ -34,4 +34,20 @@ function resizeThumbNails(){
  * Making the gallery change when the window resizes or initially loads to fit better.
 */
 window.onload = resizeThumbNails;
-window.onresize = resizeThumbNails;
+var toPrint = '';
+function printPage(){		
+	setShowCaseData();
+	toPrint = getShowCaseData();
+	document.getElementById('pageData').innerHTML = toPrint;
+	fixHeader();
+}
+
+function fixHeader(){
+	$head = $("#my-header");
+	var bottom = $head.position().top + $head.offset().top + $head.outerHeight(true);
+	$("#pageData").css({ top: bottom+'px', position: 'relative' });
+	resizeThumbNails();
+}
+window.onresize = fixHeader;
+//set printPageContents to run when page loads
+printPage();

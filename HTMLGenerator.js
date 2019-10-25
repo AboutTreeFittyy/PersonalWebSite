@@ -17,6 +17,7 @@ var showCaseData = '';
 var homeData = '';
 var adminSkillsData = '';
 var adminProjectData = '';
+var footer = '<footer id="my-footer"><p>Author: Mathew Boland - Last Updated:October 25, 2019</p></footer>';
 
 /* Uses the global showCaseData variable to format and return usable
  * HTML to the caller for display.
@@ -56,7 +57,7 @@ function setShowCaseData(){
 	showCaseData += 'id="image-container"><img id="current-image" src="images/'+pjImageName[0]+'" class="my-screen"><div class="caption-container"><div id="my-caption" class="my-caption">';
 	showCaseData += caption[0]+'</div><div id="my-info" class="my-info">'+captionInfo[0]+'</div></div></div><div id="my-thumbnail" class ="my-thumbnail">';
 	showCaseData += tnBuffer+'</div></div><div class="my-details">Scroll down to learn more</div>';
-	showCaseData += projectBuffer;
+	showCaseData += projectBuffer +footer;
 }
 /* Uses the global homeData variable to format and return usable
  * HTML to the caller for display.
@@ -98,7 +99,8 @@ function setHomeData(){
 	//add description and then skill list
 	homeData += desc+'</br></br>More on what I do:<ul id="skill-list">'+skillsListBuffer+'</ul>';
 	//add skills section now
-	homeData += '</div></div><div class = "my-skills" id="skills">'+skillsSectionBuffer+'</div>';
+	homeData += '</div></div><div class = "my-skills" id="skills">'+skillsSectionBuffer+'</div><div id="spacefooter"></div>';
+	homeData += footer;
 }
 /* Uses the global adminSkillsData variable to format and return usable
  * HTML to the caller for display.
