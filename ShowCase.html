@@ -8,7 +8,7 @@
 
 <body>
 	<header id="my-header">
-		<div class="container">
+		<div class="container" id="top">
 			<ul><li>
 				<a href="Home.html">Home</a></li><li>
 				<a href="ShowCase.html">Projects</a></li><li>				
@@ -25,9 +25,14 @@
 			<p>Author: Mathew Boland - Last Updated:October 17, 2019</p>
 		</footer>
 	</div>	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
+	<script type="text/javascript" src="jquery.sticky.js"></script>
 	<script type="text/javascript" src="ShowCaseManager.js"></script>
 	<script type="text/javascript" src="HTMLGenerator.js"></script>
 	<script type="text/javascript">
+	$(window).load(function(){
+	  $("#my-header").sticky({ topSpacing: 0, center:true, className:"my-header" });
+	});
 	var toPrint = '';
 	function printPage(){
 		setShowCaseData();
