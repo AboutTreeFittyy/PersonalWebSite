@@ -45,21 +45,15 @@
 				<h2>Edit Project Order:</h2>
 				<div id="orderProjects"></div>
 			</form>
-			<br><br>
-			<h1>HomePage Management</h1>
+			
+			<br><br><h1>HomePage Management</h1>
 			
 			<form enctype="multipart/form-data" id="addNewSkill" method="post" data-parsley-validate="">
 				<h2>Add New Skill:</h2>
 				Title<input type="text" id="newSkillTitle" name="newtitle" required=""><br>
 				Summary<input type="text" id="newSkillDescription" name="summary" required=""><br><br>
 				<input class="button" type="submit" name="saveSkill" value="Save Skill"><br><br>
-			</form>			
-			
-			<form enctype="multipart/form-data" id="deleteSkill" method="post" data-parsley-validate="">
-				<h2>Remove Skill:</h2>
-				<div id="deleteSkills"></div>
-				<input class="button" type="submit" name="deleteSkill" value="Delete Selected Skill(s)"><br><br>
-			</form>			
+			</form>						
 			
 			<form enctype="multipart/form-data" id="uploadHome" method="post" data-parsley-validate="">
 				<h2>Change HomePage Data:</h2>
@@ -69,13 +63,14 @@
 				<input class="button" id="homeImage" type="file" name="homeImage"><br><br>
 				<input class="button" type="submit" name="saveNewHomePage" value="Save New HomePage"><br><br>
 			</form>
+			
+			<form enctype="multipart/form-data" id="deleteSkill" method="post" data-parsley-validate="">
+				<h2>Remove Skill:</h2>
+				<div id="deleteSkills"></div>
+				
+			</form>
 		</div>
 	</section>
-	<div class="container">
-		<footer id="my-footer">
-			<p>Author: Mathew Boland - Last Updated:October 25, 2019</p>
-		</footer>
-	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
 	<script type="text/javascript" src="parsley.min.js"></script>
 	<script type="text/javascript" src="HTMLGenerator.js"></script>
@@ -139,6 +134,7 @@
 							//stop displaying the div from the page as its gone now and uncheck the box
 							document.getElementById("dps"+projectData[i].showcase_id).style.display = 'none';
 							document.getElementById("deleteProjectSkill"+projectData[i].showcase_id).checked = false;
+							setAdminProjectData();
 						}					
 					}
 				}

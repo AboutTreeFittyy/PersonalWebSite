@@ -128,7 +128,7 @@ function setAdminSkillsData(){
 			for(var i = 0; i < adminSkillsData.length; i++){
 				buf += '<div id="dsd'+adminSkillsData[i].skill_id+'"><input type="checkbox" id="deleteSkill'+adminSkillsData[i].skill_id+'" name="skilldelete" data-parsley-checkmin="1" required>'+adminSkillsData[i].Title+'</div>';
 			}
-			document.getElementById('deleteSkills').innerHTML = buf;
+			document.getElementById('deleteSkills').innerHTML = buf+'<input class="button" type="submit" name="deleteSkill" value="Delete Selected Skill(s)"><br><br>'+footer;
 		}
 	};
 }

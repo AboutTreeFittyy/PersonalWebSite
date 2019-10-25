@@ -44,7 +44,9 @@ function printPage(){
 
 function fixHeader(){
 	$head = $("#my-header");
-	var bottom = $head.position().top + $head.offset().top + $head.outerHeight(true);
+	$pad = $head.css('padding-top');
+	$pad = $pad.slice(0, -2);
+	var bottom = $head.height()+(Number($pad)*2);
 	$("#pageData").css({ top: bottom+'px', position: 'relative' });
 	resizeThumbNails();
 }

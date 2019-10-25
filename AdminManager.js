@@ -88,19 +88,21 @@ function changeOrder(id, order){
 		method: "POST",
 		data: {myData: dataString},
 		success:function(data){
-			alert(data);
+			//alert(data);
+			//reload the div so that it updates properly
+			setAdminProjectData();
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
 		}
-	});
-	//reload the div so that it updates properly
-	setAdminProjectData();
+	});	
 }
 function fixHeader(){
 	$head = $("#my-header");
-	var bottom = $head.position().top + $head.offset().top + $head.outerHeight(true);
-	$("#pageData").css({ top: bottom+'px', position: 'relative' });
+	$pad = $head.css('padding-top');
+	$pad = $pad.slice(0, -2);
+	var bottom = $head.height()+(Number($pad)*2);
+	$("#my-form").css({ top: bottom+'px', position: 'relative' });
 }
 window.onresize = fixHeader;
 
