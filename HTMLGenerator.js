@@ -118,13 +118,13 @@ function setAdminSkillsData(){
 		if (this.readyState == 4 && this.status == 200) {
 			adminSkillsData = JSON.parse(this.responseText);
 			for(var i = 0; i < adminSkillsData.length; i++){
-				buf += '<div id="psd'+adminSkillsData[i].skill_id+'"><input type="checkbox" id="setProjectSkill'+adminSkillsData[i].skill_id+'" name="skill">'+adminSkillsData[i].Title+'</div>';
+				buf += '<div id="psd'+adminSkillsData[i].skill_id+'"><input type="checkbox" id="setProjectSkill'+adminSkillsData[i].skill_id+'" name="skill" data-parsley-checkmin="1" required>'+adminSkillsData[i].Title+'</div>';
 			}
 			document.getElementById('addSkills').innerHTML = buf;
 			//Now do the skill delete section
 			buf = '';
 			for(var i = 0; i < adminSkillsData.length; i++){
-				buf += '<div id="dsd'+adminSkillsData[i].skill_id+'"><input type="checkbox" id="deleteSkill'+adminSkillsData[i].skill_id+'" name="skill">'+adminSkillsData[i].Title+'</div>';
+				buf += '<div id="dsd'+adminSkillsData[i].skill_id+'"><input type="checkbox" id="deleteSkill'+adminSkillsData[i].skill_id+'" name="skilldelete" data-parsley-checkmin="1" required>'+adminSkillsData[i].Title+'</div>';
 			}
 			document.getElementById('deleteSkills').innerHTML = buf;
 		}
@@ -149,7 +149,7 @@ function setAdminProjectData(){
 		if (this.readyState == 4 && this.status == 200) {
 			adminProjectData = JSON.parse(this.responseText);
 			for(var i = 0; i < adminProjectData.length; i++){
-				buf += '<div id="dps'+adminProjectData[i].showcase_id+'"><input type="checkbox" id="deleteProjectSkill'+adminProjectData[i].showcase_id+'" name="skill" value="prep">'+adminProjectData[i].Title+'</div>';
+				buf += '<div id="dps'+adminProjectData[i].showcase_id+'"><input type="checkbox" id="deleteProjectSkill'+adminProjectData[i].showcase_id+'" name="skill" value="prep" data-parsley-checkmin="1" required>'+adminProjectData[i].Title+'</div>';
 			}
 			document.getElementById('deleteProjects').innerHTML = buf;
 			buf = '';
@@ -175,7 +175,7 @@ function setAdminProjectData(){
 					}
 				}
 			}
-			document.getElementById('orderSkills').innerHTML = buf;
+			document.getElementById('orderProjects').innerHTML = buf;
 		}
 	};
 }
