@@ -28,6 +28,7 @@ function switchImage(param){
  * ShowCase can resize dynamically based on the main images current height.
 */
 function resizeThumbNails(){
+	//alert("Called");
 	//get the height of the image currently
 	var tnHeight = document.getElementById("current-image").height;
 	//adjust the thumbnail related divs to have their height be the same as the images
@@ -37,13 +38,12 @@ function resizeThumbNails(){
 /* This bit of code makes it so that these functions are called when they are needed.
  * Making the gallery change when the window resizes or initially loads to fit better.
 */
-window.onload = resizeThumbNails;
+//window.onload = resizeThumbNails;
 var toPrint = '';
 function printPage(){		
 	setShowCaseData();
-	toPrint = getShowCaseData();
-	document.getElementById('pageData').innerHTML = toPrint;
 	fixHeader();
+	//resizeThumbNails();
 }
 
 function fixHeader(){
@@ -52,8 +52,8 @@ function fixHeader(){
 	$pad = $pad.slice(0, -2);
 	var bottom = $head.height()+(Number($pad)*2);
 	$("#pageData").css({ top: bottom+'px', position: 'relative' });
-	resizeThumbNails();
+	//resizeThumbNails();
 }
 window.onresize = fixHeader;
 //set printPageContents to run when page loads
-printPage();
+window.onload = printPage;

@@ -22,7 +22,6 @@
 	<section class="my-form" id="my-form">
 		<div class="container">
 			<h1>ShowCase Management</h1>
-			<div id="imageTest">Before<img id="test1">After<img id="test2"><img id="test3"></div>
 			
 			<form enctype="multipart/form-data" id="uploadProject" method="post" data-parsley-validate="">
 				<h2>Add New Project:</h2>
@@ -223,7 +222,7 @@
 					method: "POST",
 					data: {myData: dataString},
 					success:function(data){
-						//alert(data);
+						alert(data);
 					}
 				});
 			});		 

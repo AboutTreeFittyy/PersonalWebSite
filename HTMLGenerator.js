@@ -29,44 +29,93 @@ function getShowCaseData(){
  * the ShowCase then saves it formatted to the showCaseData variable.
 */
 function setShowCaseData(){
-	showCaseData = '';
-	var tnBuffer = '';
-	var projectBuffer = '';
-	var pjImageName = ['dragon.jpg', 'myself.jpg'];
-	var caption = ['This is the dinosaur caption', 'Thisi s my own caption'];
-	var captionInfo = ['Dragon info', 'My info'];
-	var skills = ['SuperMan', 'SuperFreak', 'PowerJunkie'];
-	var descriptions = ['This is a description of my project. There are many others like it but this one is mine.', 'This is a description of my project. There are many others like it but this one is mine.'];
-	//fill data for each project accordingly
-	for(var i = 0; i < pjImageName.length; i++){
-		//Add all the thumbnails and their onclick functions to the gallery
-		var quoName = "'"+pjImageName[i]+"'";
-		tnBuffer += '<img src="images/TN_'+pjImageName[i]+'" class="my-screen" id="img1" onClick="switchImage('+quoName+')">';
-		//Add all the projects to display below the gallery
-		//First insert the image depending on if viewed mobile or in desktop
-		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-			projectBuffer += '<div class="my-showcase"><div class="my-showcase-left"><img id="my-screen" src="images/M_'+pjImageName[i]+'" class="my-screen"></div>';
-		} else{
-			projectBuffer += '<div class="my-showcase"><div class="my-showcase-left"><img id="my-screen" src="images/'+pjImageName[i]+'" class="my-screen"></div>';
-		}		
-		//Now insert the details
-		projectBuffer += '<div class="my-showcase-right">Title</br><a href="#my-header">Back to top</a></br><a href="https://github.com/AboutTreeFittyy">Project on GitHub</a></br>';				
-		for(var j = 0; j < skills.length; j++){
-			projectBuffer += skills[j]+'  ';
-		}		
-		//finally insert the description
-		projectBuffer += '</div><div class="my-showcase-bottom"><div class="my-details">'+descriptions[i]+'</div></div></div>';			
-	}	
-	showCaseData = '<div class="my-details">Feel free to browse and check out some of the projects Ive made</div><div class="my-top-showcase" id="mts"><div class="image-container"';
-	//check again for mobile
-	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-		showCaseData += 'id="image-container"><img id="current-image" src="images/M_'+pjImageName[0]+'" class="my-screen"><div class="caption-container"><div id="my-caption" class="my-caption">';
-	} else{
-		showCaseData += 'id="image-container"><img id="current-image" src="images/'+pjImageName[0]+'" class="my-screen"><div class="caption-container"><div id="my-caption" class="my-caption">';
-	}	
-	showCaseData += caption[0]+'</div><div id="my-info" class="my-info">'+captionInfo[0]+'</div></div></div><div id="my-thumbnail" class ="my-thumbnail">';
-	showCaseData += tnBuffer+'</div></div><div class="my-details">Scroll down to learn more</div>';
-	showCaseData += projectBuffer +footer;
+	//get data with ajax
+	var pjData = new XMLHttpRequest();
+	var tnBuffer = '', projectBuffer = '';
+	pjData.open("GET", "getProjectData.php", true);
+	pjData.send();
+	pjData.onreadystatechange = function() {
+		//Retrieve data for projects on success
+		if (pjData.readyState == 4 && pjData.status == 200) {
+			projectData = JSON.parse(pjData.responseText);
+			var skData = new XMLHttpRequest();
+			skData.open("GET", "getSkillData.php", true);
+			skData.send();
+			skData.onreadystatechange = function() {
+				//Retrieve the data for the skills on success
+				if (skData.readyState == 4 && skData.status == 200) {
+					skillData = JSON.parse(skData.responseText);
+					var spData = new XMLHttpRequest();
+					spData.open("GET", "getSkillShowCaseData.php", true);
+					spData.send();
+					spData.onreadystatechange = function() {
+						//Retrieve the data for the showcase_skill join table on success
+						if (spData.readyState == 4 && spData.status == 200) {
+							joinData = JSON.parse(spData.responseText);
+							//Now we have all the data we need so start generating the HTML from it
+							for(var i = 0; i < projectData.length; i++){
+								//Cycle through the projects to display them by order
+								for(var j = 0; j < projectData.length; j++){
+									//Found current order to display
+									if(projectData[j].Showcase_Order == i){
+										//Add all the thumbnails and their onclick functions to the gallery
+										var quoName = "'"+projectData[j].Image_Full+"'";
+										tnBuffer += '<img src="images/TN_'+projectData[j].Image_Full+'" class="my-screen" id="img1" onClick="switchImage('+quoName+')">';
+										//Add all the projects to display below the gallery
+										//First insert the image depending on if viewed mobile or in desktop
+										if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+											projectBuffer += '<div class="my-showcase"><div class="my-showcase-left"><img id="my-screen" src="images/M_'+projectData[j].Image_Full+'" class="my-screen"></div>';
+										} else{
+											projectBuffer += '<div class="my-showcase"><div class="my-showcase-left"><img id="my-screen" src="images/'+projectData[j].Image_Full+'" class="my-screen"></div>';
+										}		
+										//Now insert the details
+										projectBuffer += '<div class="my-showcase-right">'+projectData[j].Title+'</br><a href="#my-header">Back to top</a></br><a href="https://github.com/AboutTreeFittyy">Project on GitHub</a></br>';				
+										//Now for matching the join table
+										for(var k = 0; k < joinData.length; k++){
+											//While scanning join table stop when a match for current project id is found
+											if(joinData[k].showcase_id == projectData[j].showcase_id){
+												//Then search through the skills table
+												for(var h = 0; h < skillData.length; h++){
+													//Until we find a skill entry that matches the entry for the projects id in the join table
+													if(skillData[h].skill_id == joinData[k].skill_id){
+														//Matching entry found so add its title to buffer
+														projectBuffer += skillData[h].Title+'  ';
+													}
+												}												
+											}
+										}		
+										//finally insert the description
+										projectBuffer += '</div><div class="my-showcase-bottom"><div class="my-details">'+projectData[j].Description+'</div></div></div>';		
+									}
+								}		
+							}	
+							showCaseData = '<div class="my-details">Feel free to browse and check out some of the projects Ive made</div><div class="my-top-showcase" id="mts"><div class="image-container"';
+							var imagePath = '';
+							//check again for mobile
+							if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+								imagePath = 'images/M_'+projectData[1].Image_Full;
+							} else{
+								imagePath = 'images/'+projectData[1].Image_Full;
+							}
+							//load in image
+							var mImage = new Image();
+							mImage.src = imagePath;
+							mImage.onload = function(){
+								//Wait for image to load before resizing or else it will be resized to 0
+								resizeThumbNails();
+							}
+							//Add in final bits of data before adding it to the divs html
+							showCaseData += 'id="image-container"><img id="current-image" src="'+mImage.src+'" class="my-screen"><div class="caption-container"><div id="my-caption" class="my-caption">';
+							showCaseData += projectData[1].Title+'</div><div id="my-info" class="my-info">'+projectData[1].Description+'</div></div></div><div id="my-thumbnail" class ="my-thumbnail">';
+							showCaseData += tnBuffer+'</div></div><div class="my-details">Scroll down to learn more</div>';
+							showCaseData += projectBuffer +footer;
+							$('#pageData').html(showCaseData);
+						}
+					};
+				}
+			};
+		}
+	};		
 }
 /* Uses the global homeData variable to format and return usable
  * HTML to the caller for display.
