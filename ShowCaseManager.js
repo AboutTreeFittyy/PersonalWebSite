@@ -20,6 +20,9 @@ function switchImage(param){
 	document.getElementById("current-image").src = image.src;
 	//make sure the image is loaded before resizing
 	image.onload = () =>{
+		//Change description of main image
+		document.getElementById("my-caption").innerHTML = document.getElementById(param+"_title").innerHTML;
+		document.getElementById("my-info").innerHTML = document.getElementById(param+"_desc").innerHTML;
 		//Call resizeThumbNails to make sure gallery is adjusted after switching image
 		resizeThumbNails();
 	};

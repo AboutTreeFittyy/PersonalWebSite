@@ -17,7 +17,7 @@ var showCaseData = '';
 var homeData = '';
 var adminSkillsData = '';
 var adminProjectData = '';
-var footer = '<footer id="my-footer"><p>Author: Mathew Boland - Last Updated:October 25, 2019</p></footer>';
+var footer = '<footer id="my-footer"><p>Author: Mathew Boland - Last Updated:October 28, 2019</p></footer>';
 
 /* Uses the global showCaseData variable to format and return usable
  * HTML to the caller for display.
@@ -52,12 +52,17 @@ function setShowCaseData(){
 						//Retrieve the data for the showcase_skill join table on success
 						if (spData.readyState == 4 && spData.status == 200) {
 							joinData = JSON.parse(spData.responseText);
+							var first = 0;
 							//Now we have all the data we need so start generating the HTML from it
 							for(var i = 0; i < projectData.length; i++){
 								//Cycle through the projects to display them by order
 								for(var j = 0; j < projectData.length; j++){
 									//Found current order to display
 									if(projectData[j].Showcase_Order == i){
+										//Save the first order for later
+										if(projectData[j].Showcase_Order == 0){
+											first = j;
+										}
 										//Add all the thumbnails and their onclick functions to the gallery
 										var quoName = "'"+projectData[j].Image_Full+"'";
 										tnBuffer += '<img src="images/TN_'+projectData[j].Image_Full+'" class="my-screen" id="img1" onClick="switchImage('+quoName+')">';
@@ -69,7 +74,7 @@ function setShowCaseData(){
 											projectBuffer += '<div class="my-showcase"><div class="my-showcase-left"><img id="my-screen" src="images/'+projectData[j].Image_Full+'" class="my-screen"></div>';
 										}		
 										//Now insert the details
-										projectBuffer += '<div class="my-showcase-right">'+projectData[j].Title+'</br><a href="#my-header">Back to top</a></br><a href="https://github.com/AboutTreeFittyy">Project on GitHub</a></br>';				
+										projectBuffer += '<div class="my-showcase-right"><div id="'+projectData[j].Image_Full+'_title">'+projectData[j].Title+'</div><a href="#my-details">Back to top</a></br><a href="https://github.com/AboutTreeFittyy">Project on GitHub</a></br>';				
 										//Now for matching the join table
 										for(var k = 0; k < joinData.length; k++){
 											//While scanning join table stop when a match for current project id is found
@@ -79,23 +84,23 @@ function setShowCaseData(){
 													//Until we find a skill entry that matches the entry for the projects id in the join table
 													if(skillData[h].skill_id == joinData[k].skill_id){
 														//Matching entry found so add its title to buffer
-														projectBuffer += skillData[h].Title+'  ';
+														projectBuffer += ' - '+'<a href="Home.html#'+skillData[h].Title+'">'+skillData[h].Title+'</a>';
 													}
 												}												
 											}
 										}		
 										//finally insert the description
-										projectBuffer += '</div><div class="my-showcase-bottom"><div class="my-details">'+projectData[j].Description+'</div></div></div>';		
+										projectBuffer += ' -</div><div class="my-showcase-bottom"><div class="my-details" id="'+projectData[j].Image_Full+'_desc">'+projectData[j].Description+'</div></div></div>';		
 									}
 								}		
 							}	
-							showCaseData = '<div class="my-details">Feel free to browse and check out some of the projects Ive made</div><div class="my-top-showcase" id="mts"><div class="image-container"';
+							showCaseData = '<div class="my-details" id="my-details">Feel free to browse and check out some of the projects Ive made</div><div class="my-top-showcase" id="mts"><div class="image-container"';
 							var imagePath = '';
 							//check again for mobile
 							if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-								imagePath = 'images/M_'+projectData[1].Image_Full;
+								imagePath = 'images/M_'+projectData[first].Image_Full;
 							} else{
-								imagePath = 'images/'+projectData[1].Image_Full;
+								imagePath = 'images/'+projectData[first].Image_Full;
 							}
 							//load in image
 							var mImage = new Image();
@@ -106,7 +111,7 @@ function setShowCaseData(){
 							}
 							//Add in final bits of data before adding it to the divs html
 							showCaseData += 'id="image-container"><img id="current-image" src="'+mImage.src+'" class="my-screen"><div class="caption-container"><div id="my-caption" class="my-caption">';
-							showCaseData += projectData[1].Title+'</div><div id="my-info" class="my-info">'+projectData[1].Description+'</div></div></div><div id="my-thumbnail" class ="my-thumbnail">';
+							showCaseData += projectData[first].Title+'</div><div id="my-info" class="my-info">'+projectData[first].Description+'</div></div></div><div id="my-thumbnail" class ="my-thumbnail">';
 							showCaseData += tnBuffer+'</div></div><div class="my-details">Scroll down to learn more</div>';
 							showCaseData += projectBuffer +footer;
 							$('#pageData').html(showCaseData);
@@ -127,38 +132,74 @@ function getHomeData(){
  * the Home page then saves it formatted to the homeData variable.
 */
 function setHomeData(){
-	homedata = '';
-	var skillsListBuffer = '';
-	var skillsSectionBuffer = '';
-	var imageName = 'myself.jpg';
-	var myName = 'Mathew Boland';
-	var desc = 'Some guy who writes computer programs. Yada yada Ill think of a better description of myself later.For now this will do though to test the look of my site I guess.';
-	var titles = ["Programming in C", "Programming in Java", "Android Studio", "Web Building"];
-	var descriptions = ["I wrote a lot in C my dude. Like a lot. Well for a student it was a lot. I wrote a compiler and got myself a stuffed dinosaur, you jelly?", "To be honest this is my strong language. I've been using it for around 5 years now. Learned to code with it and while I know it's got some issues. It's still a fun language to write programs with. Check out my calculator on GitHub I made in Java or the android projects, they're in Java too.", "I've built a few games in android studio. Platformer, flappy bird, and asteroid style stuff. Check out my GitHubI've got more on it there.", "Well I mean come on. I've clearly done something. What do you think your reading this on? or maybe you just really hate it that much... alright fine don't hire me then, see if I care!"];
-	var array1 = ["Compiler Project"];
-	var array2 = ["Calculator Project"];
-	var array3 = ["Android Platformer", "Android Asteroids"];
-	var array4 = ["This website"];
-	var arrayArray = [array1, array2, array3, array4];
-	//loop through sections to add for length of array
-	for(var i = 0; i < titles.length; i++){
-		//Add each element of the skills list
-		skillsListBuffer += '<li><a href="#'+titles[i]+'">'+titles[i]+'</a></li>';
-		//More complex now, add each skill and its details to my skills section div
-		skillsSectionBuffer += '<div class="my-skill" id="'+titles[i]+'"><h2>'+titles[i]+'</h2>';
-		skillsSectionBuffer += descriptions[i]+'</br>';
-		for(var j = 0; j < arrayArray[i].length; j++){
-			skillsSectionBuffer += '<a href="#my-header">'+arrayArray[i][j]+'</a>';
+	//get data with ajax
+	var pjData = new XMLHttpRequest();
+	var skillsListBuffer = '', skillsSectionBuffer = '';
+	pjData.open("GET", "getProjectData.php", true);
+	pjData.send();
+	pjData.onreadystatechange = function() {
+		//Retrieve data for projects on success
+		if (pjData.readyState == 4 && pjData.status == 200) {
+			projectData = JSON.parse(pjData.responseText);
+			var skData = new XMLHttpRequest();
+			skData.open("GET", "getSkillData.php", true);
+			skData.send();
+			skData.onreadystatechange = function() {
+				//Retrieve the data for the skills on success
+				if (skData.readyState == 4 && skData.status == 200) {
+					skillData = JSON.parse(skData.responseText);
+					var spData = new XMLHttpRequest();
+					spData.open("GET", "getSkillShowCaseData.php", true);
+					spData.send();
+					spData.onreadystatechange = function() {
+						//Retrieve the data for the showcase_skill join table on success
+						if (spData.readyState == 4 && spData.status == 200) {
+							joinData = JSON.parse(spData.responseText);
+							var hData = new XMLHttpRequest();
+							hData.open("GET", "getHomeData.php", true);
+							hData.send();
+							hData.onreadystatechange = function() {
+								//Retrieve the data for the showcase_skill join table on success
+								if (hData.readyState == 4 && hData.status == 200) {
+									miscData = JSON.parse(hData.responseText);
+									//loop through sections to add for every skill
+									for(var i = 0; i < skillData.length; i++){
+										//Add each element of the skills list
+										skillsListBuffer += '<li><a href="#'+skillData[i].Title+'">'+skillData[i].Title+'</a></li>';
+										//More complex now, add each skill and its details to my skills section div
+										skillsSectionBuffer += '<div class="my-skill" id="'+skillData[i].Title+'"><h2>'+skillData[i].Title+'</h2>';
+										skillsSectionBuffer += skillData[i].Description+'</br>';
+										for(var j = 0; j < joinData.length; j++){
+											//found current skill in join table
+											if(joinData[j].skill_id == skillData[i].skill_id){
+												//Now find what project it belongs to
+												for(var k = 0; k < projectData.length; k++){
+													//try to match the project id with the one found in the join table
+													if(joinData[j].showcase_id == projectData[k].showcase_id){
+														//Found project with this skill so add it
+														skillsSectionBuffer += '<a href="#my-header">'+projectData[k].Title+'</a>';
+													}											
+												}
+											}									
+										}
+										skillsSectionBuffer += '</br></div>';
+									}
+									//add image name and my name
+									homeData += '<div class="my-home"><div class="my-home-left"><img id="my-screen" src="images/'+miscData[0].Image+'" class="my-screen"></div><div class="my-home-right"></br><h2>'+miscData[0].Name+'</h2></br>';
+									//add description and then skill list
+									homeData += miscData[0].About+'</br></br>More on what I do:<ul id="skill-list">'+skillsListBuffer+'</ul>';
+									//add skills section now
+									homeData += '</div></div><div class = "my-skills" id="skills">'+skillsSectionBuffer+'</div><div id="spacefooter"></div>';
+									homeData += footer;
+									document.getElementById('pageData').innerHTML = homeData;
+								}
+							};
+						}
+					};
+				}
+			};
 		}
-		skillsSectionBuffer += '</br></div>';
-	}
-	//add image name and my name
-	homeData += '<div class="my-home"><div class="my-home-left"><img id="my-screen" src="images/'+imageName+'" class="my-screen"></div><div class="my-home-right"></br><h2>'+myName+'</h2></br>';
-	//add description and then skill list
-	homeData += desc+'</br></br>More on what I do:<ul id="skill-list">'+skillsListBuffer+'</ul>';
-	//add skills section now
-	homeData += '</div></div><div class = "my-skills" id="skills">'+skillsSectionBuffer+'</div><div id="spacefooter"></div>';
-	homeData += footer;
+	};		
 }
 /* Uses the global adminSkillsData variable to format and return usable
  * HTML to the caller for display.
