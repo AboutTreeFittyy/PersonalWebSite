@@ -216,8 +216,8 @@
 									if(data == ''){
 										//success, now upload data for database
 										var data = {
-										"title" : document.getElementById("homeTitle").value,
-										"description" : document.getElementById("homeDescription").value,
+										"title" : document.getElementById("homeTitle").value.replace(/'/g, '"'),
+										"description" : document.getElementById("homeDescription").value.replace(/'/g, '"'),
 										"fileName" : file_name
 										};							
 										var dataString = JSON.stringify(data);
@@ -236,6 +236,8 @@
 												}
 												else{
 													//Success
+													document.getElementById("homeTitle").value = '';
+													document.getElementById("homeDescription").value = '';
 													document.getElementById('homeUploadStatus').setAttribute( "class", "greenClass" );
 													document.getElementById("homeUploadStatus").innerHTML = "Home page Updated Successfully";
 												}
@@ -273,9 +275,10 @@
 				//clear status
 				document.getElementById("addSkillStatus").innerHTML = '';
 				//contains data for database only
+				//var title = 
 				var data = {
-				"title" : document.getElementById("newSkillTitle").value,
-				"description" : document.getElementById("newSkillDescription").value
+				"title" : document.getElementById("newSkillTitle").value.replace(/'/g, '"'),
+				"description" : document.getElementById("newSkillDescription").value.replace(/'/g, '"')
 				};							
 				var dataString = JSON.stringify(data);
 				//Now send the ShowCase data so it can be added to the database
@@ -289,6 +292,8 @@
 						//check response from php page
 						if(data == ''){
 							//success
+							document.getElementById("newSkillTitle").value = '';
+							document.getElementById("newSkillDescription").value = '';
 							document.getElementById('addSkillStatus').setAttribute( "class", "greenClass" );
 							document.getElementById("addSkillStatus").innerHTML = "Skill Successfully Added";
 						}
@@ -364,8 +369,8 @@
 												//success now save data to database
 												//contains data for database only
 												var data = {
-												"title" : document.getElementById("projectTitle").value,
-												"description" : document.getElementById("projectDescription").value,
+												"title" : document.getElementById("projectTitle").value.replace(/'/g, '"'),
+												"description" : document.getElementById("projectDescription").value.replace(/'/g, '"'),
 												"fileName" : file_name
 												};							
 												var dataString = JSON.stringify(data);
