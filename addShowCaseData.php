@@ -13,9 +13,9 @@ if(in_array($type, $allowedTypes)){
 	$sql = "INSERT INTO showcase (Title, Description, Image_Full, Showcase_Order)
 	VALUES ('$obj->title','$obj->description','$obj->fileName', ".$row[0].")";
 	if(mysqli_query($con, $sql)){
-		$msg = "The file has been uploaded successfully.";
+		$msg = '';
 	}else{
-		$msg = "Unable to upload file path to DB.";
+		$msg = "Unable to upload project data to DB.";
 	} 
 } else{
 	//invalid file type

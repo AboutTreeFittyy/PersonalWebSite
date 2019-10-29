@@ -12,11 +12,11 @@ $row = mysqli_fetch_row($result);
 //insert the entry into the join table
 $sql = "INSERT INTO showcase_skill (showcase_id, skill_id) VALUES (".$row[0].", ".$obj->id.")";
 if(mysqli_query($con, $sql)){
-	$msg = "The tables have been linked successfully.";
+	$msg = '';
 }else{
 	$msg = "Unable to link tables in DB.";
 }
 
 //Show error/success message
-echo $msg.$row[0].$obj->id;
+echo $msg;
 ?>

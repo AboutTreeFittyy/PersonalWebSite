@@ -12,7 +12,7 @@ if(!$result){
 }
 $sql = "DELETE FROM `skill` WHERE `skill_id` = $obj";
 if(mysqli_query($con, $sql)){
-	$msg = "The skill has been deleted successfully.";
+	$msg = null;
 }else{
 	$msg = "Unable to delete skill.";
 } 

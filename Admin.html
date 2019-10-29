@@ -25,48 +25,49 @@
 			
 			<form enctype="multipart/form-data" id="uploadProject" method="post" data-parsley-validate="">
 				<h2>Add New Project:</h2>
-				Title <input type="text" id="projectTitle" name="title" required=""><br>
-				Description<input type="text" id="projectDescription" name="description" required=""><br>
+				<input type="text" id="projectTitle" name="title" required="">
+				<input type="text" id="projectDescription" name="description" required="">Title<br>Description<br>
+				Add Image: 
+				<input class="button" id="projectImage" type="file" name="projectImage" required=""><br>
 				Select Skills for Project: 
-				<div id="addSkills"></div>
-				<br>Add Image:<br>
-				<input class="button" id="projectImage" type="file" name="projectImage" required=""><br><br>
+				<div id="addSkills"></div>				
+				<div id="projectUploadStatus"></div>
 				<input class="button" type="submit" name="upload" value="Save New Project"><br><br>
 			</form>
 			
 			<form enctype="multipart/form-data" id="deleteProject" method="post" data-parsley-validate="">
 				<h2>Delete Project:</h2>
 				<div id="deleteProjects"></div>
+				<div id="projectDeleteStatus"></div>
 				<input class="button" type="submit" name="deleteProject" value="Delete Selected Project(s)"><br><br>
 			</form>
 			
 			<form enctype="multipart/form-data" id="reorderSkills" method="post">
 				<h2>Edit Project Order:</h2>
-				<div id="orderProjects"></div>
-			</form>
+				<div id="orderProjects"></div><br>
+			</form>							
 			
-			<br><br><h1>HomePage Management</h1>
+			<form enctype="multipart/form-data" id="uploadHome" method="post" data-parsley-validate="">
+				<h2>Change HomePage Data:</h2>
+				Main Image:
+				<input class="button" id="homeImage" type="file" name="homeImage"><br>
+				Name <input type="text" id="homeTitle" name="homeTitle" required=""><br>
+				Description<input type="text" id="homeDescription" name="homeDescription" required="">
+				<div id="homeUploadStatus"></div>
+				<input class="button" type="submit" name="saveNewHomePage" value="Save New HomePage"><br><br>
+			</form>
 			
 			<form enctype="multipart/form-data" id="addNewSkill" method="post" data-parsley-validate="">
 				<h2>Add New Skill:</h2>
 				Title<input type="text" id="newSkillTitle" name="newtitle" required=""><br>
-				Summary<input type="text" id="newSkillDescription" name="summary" required=""><br><br>
+				Summary<input type="text" id="newSkillDescription" name="summary" required=""><br>
+				<div id="addSkillStatus"></div>
 				<input class="button" type="submit" name="saveSkill" value="Save Skill"><br><br>
-			</form>						
-			
-			<form enctype="multipart/form-data" id="uploadHome" method="post" data-parsley-validate="">
-				<h2>Change HomePage Data:</h2>
-				Name <input type="text" id="homeTitle" name="homeTitle" required=""><br>
-				Description<input type="text" id="homeDescription" name="homeDescription" required="">
-				<br>Main Image:<br>
-				<input class="button" id="homeImage" type="file" name="homeImage"><br><br>
-				<input class="button" type="submit" name="saveNewHomePage" value="Save New HomePage"><br><br>
-			</form>
+			</form>	
 			
 			<form enctype="multipart/form-data" id="deleteSkill" method="post" data-parsley-validate="">
 				<h2>Remove Skill:</h2>
-				<div id="deleteSkills"></div>
-				
+				<div id="deleteSkills"></div>				
 			</form>
 		</div>
 	</section>
@@ -90,10 +91,21 @@
 								method: "POST",
 								data: {myData: JSON.stringify(skillData[i].skill_id)},
 								success:function(data){
-									//alert(data);
+									//check response from php page
+									if(data == ''){
+										//success
+										document.getElementById('deleteSkillStatus').setAttribute( "class", "greenClass" );
+										document.getElementById("deleteSkillStatus").innerHTML = "Skill Successfully Deleted";
+									}
+									else{
+										//got an error message to display
+										document.getElementById('deleteSkillStatus').setAttribute( "class", "redClass" );
+										document.getElementById("deleteSkillStatus").innerHTML = data;
+									}
 								},
 								error: function(XMLHttpRequest, textStatus, errorThrown) {
-									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
+									document.getElementById('deleteSkillStatus').setAttribute( "class", "redClass" );
+									document.getElementById("deleteSkillStatus").innerHTML = "Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText;
 								}
 							});
 							//Remove skill from page and uncheck it
@@ -112,28 +124,50 @@
 		$(document).ready(function(){		 
 			$('#deleteProject').on('submit', function(event){
 				event.preventDefault();
+				//clear status buffer
+				document.getElementById("projectDeleteStatus").innerHTML = '';
 				//Get data for projects so we know which ids to look for
 				var projectData = getAdminProjectData();
 				for(var i = 0; i < projectData.length; i++){
 					//Check if that id exists
-					if(document.getElementById("deleteProjectSkill"+projectData[i].showcase_id)){
+					if(document.getElementById("deleteProjectSkill"+projectData[i].showcase_id)){						
 						//Make sure its checked, if it is then send an ajax request to delete it
-						if(document.getElementById("deleteProjectSkill"+projectData[i].showcase_id).checked){
+						if(document.getElementById("deleteProjectSkill"+projectData[i].showcase_id).checked){							
 							$.ajax({
 								url:"deleteProject.php",
 								method: "POST",
 								data: {myData: JSON.stringify(projectData[i].showcase_id)},
 								success:function(data){
-									//alert(data);
+									//check response from php page
+									if(data == ''){
+										//success now go back through that same stuff so that you can get the variables back in scope
+										var projectData = getAdminProjectData();
+										for(var i = 0; i < projectData.length; i++){
+											//Check if that id exists
+											if(document.getElementById("deleteProjectSkill"+projectData[i].showcase_id)){						
+												//Make sure its checked, if it is then send an ajax request to delete it
+												if(document.getElementById("deleteProjectSkill"+projectData[i].showcase_id).checked){
+													//stop displaying the div from the page as its gone now and uncheck the box												
+													document.getElementById("dps"+projectData[i].showcase_id).style.display = 'none';
+													document.getElementById("deleteProjectSkill"+projectData[i].showcase_id).checked = false;
+													setAdminProjectData();
+													document.getElementById('projectDeleteStatus').setAttribute( "class", "greenClass" );
+													document.getElementById("projectDeleteStatus").innerHTML = 'Project Deleted Successfully';
+												}
+											}
+										}
+									}
+									else{
+										//got an error message to display
+										document.getElementById('projectDeleteStatus').setAttribute( "class", "redClass" );
+										document.getElementById("projectDeleteStatus").innerHTML = data;
+									}									
 								},
-								error: function(XMLHttpRequest, textStatus, errorThrown) {
-									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
+								error: function(XMLHttpRequest, textStatus, errorThrown) {									
+									document.getElementById('projectDeleteStatus').setAttribute( "class", "redClass" );
+									document.getElementById("projectDeleteStatus").innerHTML = 'Project Deleted Successfully';"Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText;
 								}
-							});
-							//stop displaying the div from the page as its gone now and uncheck the box
-							document.getElementById("dps"+projectData[i].showcase_id).style.display = 'none';
-							document.getElementById("deleteProjectSkill"+projectData[i].showcase_id).checked = false;
-							setAdminProjectData();
+							});							
 						}					
 					}
 				}
@@ -166,22 +200,7 @@
 									file_name = file_name.substring(1);
 								}
 							}
-							//contains data for database only
-							var data = {
-							"title" : document.getElementById("homeTitle").value,
-							"description" : document.getElementById("homeDescription").value,
-							"fileName" : file_name
-							};							
-							var dataString = JSON.stringify(data);
-							//Now send the ShowCase data so it can be added to the database
-							$.ajax({
-								url:"addHomePageData.php",
-								method: "POST",
-								data: {myData: dataString},
-								success:function(data){
-									//alert(data);
-								}
-							});
+							
 							//Now send the photos to the server to be saved for future hosting						
 							var formData = new FormData();
 							formData.append('main', dataURItoBlob(main_image), file_name);
@@ -193,14 +212,55 @@
 								processData: false,
 								contentType: false,
 								success:function(data){
-									//alert(data);
+									//check response from php page
+									if(data == ''){
+										//success, now upload data for database
+										var data = {
+										"title" : document.getElementById("homeTitle").value,
+										"description" : document.getElementById("homeDescription").value,
+										"fileName" : file_name
+										};							
+										var dataString = JSON.stringify(data);
+										//Now send the ShowCase data so it can be added to the database
+										$.ajax({
+											url:"addHomePageData.php",
+											method: "POST",
+											data: {myData: dataString},
+											success:function(data){
+												//check response from php page
+												if(data != ''){										
+													//got an error message to display
+													document.getElementById('homeUploadStatus').setAttribute( "class", "redClass" );
+													document.getElementById("homeUploadStatus").innerHTML = data;
+													return;
+												}
+												else{
+													//Success
+													document.getElementById('homeUploadStatus').setAttribute( "class", "greenClass" );
+													document.getElementById("homeUploadStatus").innerHTML = "Home page Updated Successfully";
+												}
+											},
+											error: function(XMLHttpRequest, textStatus, errorThrown) {
+												document.getElementById('homeUploadStatus').setAttribute( "class", "redClass" );
+												document.getElementById("homeUploadStatus").innerHTML = "Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText;
+												return;
+											}
+										});
+									}
+									else{
+										//got an error message to display
+										document.getElementById('homeUploadStatus').setAttribute( "class", "redClass" );
+										document.getElementById("homeUploadStatus").innerHTML = data;
+									}
 								},
 								error: function(XMLHttpRequest, textStatus, errorThrown) {
-									alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
+									document.getElementById('homeUploadStatus').setAttribute( "class", "redClass" );
+									document.getElementById("homeUploadStatus").innerHTML = "Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText;
 								}
 							});
 						}else{
-							alert("Invalid Photo Uploaded");
+							document.getElementById('homeUploadStatus').setAttribute( "class", "redClass" );
+							document.getElementById("homeUploadStatus").innerHTML = "Invalid Photo Selected";
 						}
 					};					
 				};	
@@ -210,6 +270,8 @@
 		$(document).ready(function(){		 
 			$('#addNewSkill').on('submit', function(event){
 				event.preventDefault();
+				//clear status
+				document.getElementById("addSkillStatus").innerHTML = '';
 				//contains data for database only
 				var data = {
 				"title" : document.getElementById("newSkillTitle").value,
@@ -222,18 +284,38 @@
 					method: "POST",
 					data: {myData: dataString},
 					success:function(data){
-						alert(data);
+						//refresh the skills for the other input forms
+						setAdminSkillsData();
+						//check response from php page
+						if(data == ''){
+							//success
+							document.getElementById('addSkillStatus').setAttribute( "class", "greenClass" );
+							document.getElementById("addSkillStatus").innerHTML = "Skill Successfully Added";
+						}
+						else{
+							//got an error message to display
+							document.getElementById('addSkillStatus').setAttribute( "class", "redClass" );
+							document.getElementById("addSkillStatus").innerHTML = data;
+						}						
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						document.getElementById('addSkillStatus').setAttribute( "class", "redClass" );
+						document.getElementById("addSkillStatus").innerHTML = "Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText;
 					}
 				});
 			});		 
-		}); 		
-		
+		}); 
+			
+		//Global variable so it wont go out of scope in the uploadProject function as it goes through its calls
+		var file_name;
 		$(document).ready(function(){		 
 			$('#uploadProject').on('submit', function(event){
 				event.preventDefault();
+				//clear status buffer
+				document.getElementById("projectUploadStatus").innerHTML = '';
 				var path = document.getElementById('projectImage').value;
 				//Get file name with extension
-				var file_name;
+				//var file_name;
 				if (path) {
 					var start = (path.indexOf('\\') >= 0 ? path.lastIndexOf('\\') : path.lastIndexOf('/'));
 					file_name = path.substring(start);
@@ -277,59 +359,93 @@
 										processData: false,
 										contentType: false,
 										success:function(data){
-											//alert(data);
+											//check response from php page
+											if(data == ''){
+												//success now save data to database
+												//contains data for database only
+												var data = {
+												"title" : document.getElementById("projectTitle").value,
+												"description" : document.getElementById("projectDescription").value,
+												"fileName" : file_name
+												};							
+												var dataString = JSON.stringify(data);
+												//Now send the ShowCase data so it can be added to the database
+												$.ajax({
+													url:"addShowCaseData.php",
+													method: "POST",
+													data: {myData: dataString},
+													success:function(data){
+														if(data != ''){
+															//Failure to upload files
+															document.getElementById('projectUploadStatus').setAttribute( "class", "redClass" );
+															document.getElementById("projectUploadStatus").innerHTML = data;
+															return;
+														}else{
+															//Success. Now save the skills with the project
+															var skills = getAdminSkillsData();
+															//cycle through skills checkboxes
+															for(var i = 0; i < skills.length; i++ ){
+																//see if skill is selected before adding it to project
+																if(document.getElementById("setProjectSkill"+skills[i].skill_id).checked){
+																	var data = {"id" : skills[i].skill_id};	
+																	var dataString = JSON.stringify(data);
+																	//Now send the ShowCase data so it can be added to the database
+																	$.ajax({
+																		url:"joinSkillProject.php",
+																		method: "POST",
+																		data: {myData: dataString},
+																		success:function(data){
+																			if(data == ''){
+																				//success
+																				setAdminProjectData();
+																				document.getElementById("projectTitle").value = '';
+																				document.getElementById("projectDescription").value = '';
+																				document.getElementById('projectUploadStatus').setAttribute( "class", "greenClass" );
+																				document.getElementById("projectUploadStatus").innerHTML = 'Project Uploaded Successfully';	
+																			}
+																			else{
+																				document.getElementById('projectUploadStatus').setAttribute( "class", "redClass" );
+																				document.getElementById("projectUploadStatus").innerHTML = data;
+																				return;
+																			}
+																		},
+																		error: function(XMLHttpRequest, textStatus, errorThrown) {
+																			document.getElementById('projectUploadStatus').setAttribute( "class", "redClass" );
+																			document.getElementById("projectUploadStatus").innerHTML = "Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText;
+																			return;
+																		}
+																	});
+																	//Now uncheck the checkbox
+																	document.getElementById("setProjectSkill"+skills[i].skill_id).checked = false;
+																}
+															}
+														}
+													},
+													error: function(XMLHttpRequest, textStatus, errorThrown) {
+														document.getElementById('projectUploadStatus').setAttribute( "class", "redClass" );
+														document.getElementById("projectUploadStatus").innerHTML = "Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText;
+														return;
+													}
+												});
+											}
+											else{
+												//got an error message to display
+												document.getElementById('projectUploadStatus').setAttribute( "class", "redClass" );
+												document.getElementById("projectUploadStatus").innerHTML = data;
+												return;
+											}																						
 										},
 										error: function(XMLHttpRequest, textStatus, errorThrown) {
-											alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
+											document.getElementById('projectUploadStatus').setAttribute( "class", "redClass" );
+											document.getElementById("projectUploadStatus").innerHTML = "Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText;
+											return;
 										}
 									});
 								};
-							};
-							//contains data for database only
-							var data = {
-							"title" : document.getElementById("projectTitle").value,
-							"description" : document.getElementById("projectDescription").value,
-							"fileName" : file_name
 							};							
-							var dataString = JSON.stringify(data);
-							//Now send the ShowCase data so it can be added to the database
-							$.ajax({
-								url:"addShowCaseData.php",
-								method: "POST",
-								data: {myData: dataString},
-								success:function(data){
-									//alert(data);
-								}
-							});							
-							//Now save the skills with the project
-							var skills = getAdminSkillsData();
-							//cycle through skills checkboxes
-							for(var i = 0; i < skills.length; i++ ){
-								//see if skill is selected before adding it to project
-								if(document.getElementById("setProjectSkill"+skills[i].skill_id).checked){
-									var data = {
-									"id" : skills[i].skill_id
-									};	
-									var dataString = JSON.stringify(data);
-									//Now send the ShowCase data so it can be added to the database
-									$.ajax({
-										url:"joinSkillProject.php",
-										method: "POST",
-										data: {myData: dataString},
-										success:function(data){
-											//alert(data);
-											setAdminProjectData();
-										},
-										error: function(XMLHttpRequest, textStatus, errorThrown) {
-											alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
-										}
-									});
-									//Now uncheck the checkbox
-									document.getElementById("setProjectSkill"+skills[i].skill_id).checked = false;
-								}
-							}
 						}else{
-							alert("Invalid Photo Uploaded");
+							document.getElementById('projectUploadStatus').setAttribute( "class", "redClass" );
+							document.getElementById("projectUploadStatus").innerHTML = 'Invalid Photo';	
 						}
 					};					
 				};	

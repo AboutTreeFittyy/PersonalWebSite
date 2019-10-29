@@ -19,7 +19,7 @@ if(!$result){
 //Now that the join table is taken care of, delete the project
 $sql = "DELETE FROM `showcase` WHERE `showcase_id` = $obj";
 if(mysqli_query($con, $sql)){
-	$msg = "The project has been deleted successfully.";
+	$msg = '';
 }else{
 	die("Unable to delete project. SQL issues resulted and now must be taken care of.");
 }
@@ -41,7 +41,7 @@ for($i = 0; $i < sizeof($data); $i++){
 	$order = $data[$i]->showcase_id;
 	$sql = "UPDATE showcase SET Showcase_Order = $newOrder WHERE showcase_id = $order";
 	if(mysqli_query($con, $sql)){
-		$msg .= " Reorder Success. ";
+		$msg = '';
 	}else{
 		$msg .= " Reorder failure.";
 	}

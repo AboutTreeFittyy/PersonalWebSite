@@ -93,7 +93,16 @@
 	 color:#fff;
  }
 
+ /*These are used to switch text colours when reporting on form submissions*/
+ .greenClass{
+	 color: green;
+	 font-weight: 200;
+ }
  
+ .redClass{
+	 color: red;
+	 font-weight: 200;
+ }
  /*use these categories for any type of html you want to modify*/
  .categories li{
 	 padding-bottom:6px;
@@ -106,8 +115,9 @@
  }
  
  .my-form input[type="text"], .my-form textarea{
-	 padding: 8px;
-	 width: 100%;
+	 padding: 6px;
+	 width: 90%;
+	 float: right;
  }
  
  .block{
