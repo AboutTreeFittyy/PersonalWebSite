@@ -1,4 +1,8 @@
 <?php
+/*FileName: joinSkillProject.php
+ *Modified: October 28, 2019
+ *About: This php file finds the most recent showcase entry to add the id given for a skill into the join table with.
+*/
 // Include the database configuration file
 include 'config.php';
 $msg = '';

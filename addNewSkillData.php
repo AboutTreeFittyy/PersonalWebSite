@@ -1,4 +1,9 @@
 <?php
+/*FileName: addNewSkillData.php
+ *Modified: October 28, 2019
+ *About: This php file recieves a post containing new data for a skill. 
+ *It retrieves this data then inserts it into the skill table in the database.
+*/
 // Include the database configuration file
 include 'config.php';
 $msg = '';

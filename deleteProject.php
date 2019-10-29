@@ -1,4 +1,10 @@
 <?php
+/*FileName: deleteProject.php
+ *Modified: October 28, 2019
+ *About: This php file receives data about a project in the database. It then finds that project based on the
+ *given id and deletes it. Then it deletes its associated joins in the showcase_skill table. Finally it 
+ * reorders the remaining projects so that they don't get mixed up with this one missing.
+*/
 // Include the database configuration file
 include 'config.php';
 $msg = '';

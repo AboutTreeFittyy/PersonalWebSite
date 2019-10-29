@@ -1,4 +1,8 @@
 <?php
+/*FileName: addHomePagePhoto.php
+ *Modified: October 28, 2019
+ *About: This php file receives a post containing an image blob which it saves in the /images folder
+*/
 $msg = '';
 $loc = '';
 if( isset($_FILES['main']) and !$_FILES['main']['error'] ){

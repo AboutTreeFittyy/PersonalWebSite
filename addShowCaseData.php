@@ -1,4 +1,8 @@
 <?php
+/*FileName: addShowCaseData.php
+ *Modified: October 28, 2019
+ *About: This php file adds the data it receives into the showcase table in the database.
+*/
 // Include the database configuration file
 include 'config.php';
 $msg = '';

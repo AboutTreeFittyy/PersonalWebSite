@@ -1,4 +1,8 @@
 <?php
+/*FileName: deleteSkill.php
+ *Modified: October 28, 2019
+ *About: This php file receives data about a skill and uses it to delete that skill from the database.
+*/
 // Include the database configuration file
 include 'config.php';
 $msg = '';

@@ -23,11 +23,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
 	<script type="text/javascript" src="HTMLGenerator.js"></script>
 	<script type="text/javascript">
+	/*Just a few simple functions to keep the site from messing up when it loads/resizes*/
 	var toPrint = '';
 	function printPage(){
 		setHomeData();
-		//toPrint = getHomeData();
-		//document.getElementById('pageData').innerHTML = toPrint;
 		fixHeader();
 	}
 	function fixHeader(){

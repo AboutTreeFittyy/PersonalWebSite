@@ -1,17 +1,16 @@
 /* FileName: HTMLGenerator.js
  * Author: Mathew Boland
- * Date Modified: October 22th, 2019
+ * Date Modified: October 28th, 2019
  * Description: Class with accessors to the sites database.
  * Using set functions to retrieve the data from the database
- * needed for that particular part of the site. Then getters
- * are used to retrieve formatted versions of the data for the 
- * site. Data is stored globally and accessed this way to limit
- * the sites need to access the database.
+ * so that they can format that particular part of the sites HTML.
+ * Getters are also used so that if something needs to get the data
+ * used here. It won't need to waste time accessing the DB again.
 */
 
 /* Global variables
- * Hold the unformatted data from the database so that it can be formatted
- * for each use and the database only needs to be accessed once.
+ * Hold the data from the database so that it can be formatted
+ * for each ones use and the database only needs to be accessed once.
 */
 var showCaseData = '';
 var homeData = '';
@@ -19,14 +18,13 @@ var adminSkillsData = '';
 var adminProjectData = '';
 var footer = '<footer id="my-footer"><p>Author: Mathew Boland - Last Updated:October 28, 2019</p></footer>';
 
-/* Uses the global showCaseData variable to format and return usable
- * HTML to the caller for display.
-*/
+/* Returns the global variable showCaseData when called.*/
 function getShowCaseData(){
 	return showCaseData;
 }
-/* Accesses the database when called to retrieve the needed data for
- * the ShowCase then saves it formatted to the showCaseData variable.
+/* Accesses the database when called to retrieve the needed data for the project delete
+ * admin area which it save in the showCaseData variable. Then appends the data with the
+ * proper HTML to the correct part of the page for display.
 */
 function setShowCaseData(){
 	//get data with ajax
@@ -65,7 +63,7 @@ function setShowCaseData(){
 										}
 										//Add all the thumbnails and their onclick functions to the gallery
 										var quoName = "'"+projectData[j].Image_Full+"'";
-										tnBuffer += '<img src="images/TN_'+projectData[j].Image_Full+'" class="my-screen" id="img1" onClick="switchImage('+quoName+')">';
+										tnBuffer += '<img src="images/TN_'+projectData[j].Image_Full+'" class="my-screen" onClick="switchImage('+quoName+')">';
 										//Add all the projects to display below the gallery
 										//First insert the image depending on if viewed mobile or in desktop
 										if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
@@ -122,14 +120,13 @@ function setShowCaseData(){
 		}
 	};		
 }
-/* Uses the global homeData variable to format and return usable
- * HTML to the caller for display.
-*/
+/* Returns the global variable homeData when called.*/
 function getHomeData(){
 	return homeData;
 }
-/* Accesses the database when called to retrieve the needed data for
- * the Home page then saves it formatted to the homeData variable.
+/* Accesses the database when called to retrieve the needed data for the project delete
+ * admin area which it save in the homeData variable. Then appends the data with the
+ * proper HTML to the correct part of the page for display.
 */
 function setHomeData(){
 	//get data with ajax
@@ -201,14 +198,13 @@ function setHomeData(){
 		}
 	};		
 }
-/* Uses the global adminSkillsData variable to format and return usable
- * HTML to the caller for display.
-*/
+/* Returns the global variable adminSkillsData when called.*/
 function getAdminSkillsData(){
 	return adminSkillsData;
 }
-/* Accesses the database when called to retrieve the needed data for the skill delete
- * admin area, then saves it formatted to the adminSkillsData variable.
+/* Accesses the database when called to retrieve the needed data for the project delete
+ * admin area which it save in the adminSkillsData variable. Then appends the data with the
+ * proper HTML to the correct part of the page for display.
 */
 function setAdminSkillsData(){
 	var ajax = new XMLHttpRequest();
@@ -231,14 +227,13 @@ function setAdminSkillsData(){
 		}
 	};
 }
-/* Uses the global adminProjectData variable to format and return usable
- * HTML to the caller for display.
-*/
+/* Returns the global variable adminProjectData when called.*/
 function getAdminProjectData(){
 	return adminProjectData;
 }
 /* Accesses the database when called to retrieve the needed data for the project delete
- * admin area, then saves it formatted to the adminProjectData variable.
+ * admin area which it save in the adminProjectData variable. Then appends the data with the
+ * proper HTML to the correct part of the page for display.
 */
 function setAdminProjectData(){
 	//get data with ajax
@@ -280,18 +275,3 @@ function setAdminProjectData(){
 		}
 	};
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

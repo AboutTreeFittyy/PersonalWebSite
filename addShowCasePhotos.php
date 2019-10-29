@@ -1,4 +1,8 @@
 <?php
+/*FileName: addShowCasePhotos.php
+ *Modified: October 28, 2019
+ *About: This php file receives 3 image blobs which it then stores in the /images folder
+*/
 $msg = '';
 $loc = '';
 if( isset($_FILES['main']) and !$_FILES['main']['error'] ){

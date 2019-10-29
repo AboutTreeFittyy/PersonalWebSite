@@ -1,10 +1,9 @@
 /* FileName: AdminManager.js
  * Author: Mathew Boland
- * Date Modified: October 10th, 2019
+ * Date Modified: October 28th, 2019
  * Description: Multiple functions used to manage the administrative page
- * for the site. This so far only has functions used to adjust images
- * that are saved to be more compatible with the website. more functions may
- * be added if needed.
+ * for the site. Handles resizing of images for upload, conversion to blob,
+ * changing project orders and other small things for the admin page.
 */
 
 /* This creates a copy of the main image that can be used on mobile versions
@@ -19,7 +18,7 @@ function createMobileImageCopy(image){
 	var ctx = canvas.getContext("2d");
 	ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 	//Return the image made on the canvas
-	return canvas.toDataURL("image/jpeg", 0.5);
+	return canvas.toDataURL("image/jpeg", 0.4);
 }
 /* This creates a copy of the main image with a 1:5 ratio to be used for the 
  * desktop version of the sites thumbnails. Image quality and size are reduced
@@ -29,12 +28,13 @@ function createMobileImageCopy(image){
 function createThumbNailCopy(image){
 	//Create a canvas to use for adjusting the image with 
 	var canvas = document.createElement("canvas");
-	canvas.width = image.width*0.2;
-	canvas.height = image.height*0.2;
+	var scale = 300/image.width;
+	canvas.width = 300;
+	canvas.height = image.height*scale;
 	var ctx = canvas.getContext("2d");
 	ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 	//Return the image made on the canvas
-	return canvas.toDataURL("image/jpeg", 0.5);
+	return canvas.toDataURL("image/jpeg", 0.3);
 }
 /* This function takes the image from the form and adjusts its height to be
  * at the same scale it was before adjusted to a 1200 pixel width.
@@ -42,25 +42,25 @@ function createThumbNailCopy(image){
  * Null is returned on failure.
 */
 function normalizeImage(image){
-	var scale = image.height/image.width;
+	var scale = 700/image.height;
 	//alert("Before Height:"+image.height+", Image Width: "+image.width+"");
-	if(image.height > image.width || image.width < 700 || image.height < 500){
-		alert("After Height:"+image.height+", Image Width: "+image.width+" THIS BLOWS");
+	if(image.height > image.width || image.width < 700 || image.height < 400){
 		return null; // this image would look terrible in the gallery
 	}
 	//Create a canvas to use for adjusting the image with 
 	var canvas = document.createElement("canvas");
-	canvas.width = 1200;
-	canvas.height = scale*1200;
+	canvas.width = image.width * scale;
+	canvas.height = 700;
 	var ctx = canvas.getContext("2d");
 	ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 	//Return the image made on the canvas
-	return canvas.toDataURL("image/jpeg", 0.9);//};
+	return canvas.toDataURL("image/jpeg", 0.6);//};
 }
-
+/*This function switches the data for the order of the projects. Much of this may be unneeded now
+* as it refreshes on success anyways.
+*/
 function changeOrder(id, order){
-	//var orderData = getAdminProjectData();
-	//Get project info of two that are chaning orders
+	//Get project info of two that are changing orders
 	var thisTitle = document.getElementById("dds"+id);
 	var otherTitle = document.querySelector("button[value='"+order+"']");	
 	//save the current order of the title clicked
@@ -84,7 +84,6 @@ function changeOrder(id, order){
 		method: "POST",
 		data: {myData: dataString},
 		success:function(data){
-			//alert(data);
 			//reload the div so that it updates properly
 			setAdminProjectData();
 		},

@@ -1,4 +1,9 @@
 <?php
+/*FileName: changeProjectOrder.php
+ *Modified: October 28, 2019
+ *About: This php file receives two id's from a post. Then it uses these id's to switch
+ *the two they're fors order in the project table.
+*/
 // Include the database configuration file
 include 'config.php';
 $msg = '';

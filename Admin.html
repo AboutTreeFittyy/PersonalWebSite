@@ -76,6 +76,13 @@
 	<script type="text/javascript" src="HTMLGenerator.js"></script>
 	<script type="text/javascript" src="AdminManager.js"></script>
 	<script>		
+		/*The following functions are all JQuery functions designed to handle input from the forms on this page.
+		 *They can receive data, send data or both. They often call functions from HTMLGenerator to refresh parts of 
+		 *the page after a new data entry has been submitted successfully. Mostly they work by collecting the data
+		 *in their respective forms and formatting them to be posted in an ajax call to a php page. Status divs
+		 *are given to each so that they can display their success or failure when needed for the user.
+		*/		
+		
 		$(document).ready(function(){		 
 			$('#deleteSkill').on('submit', function(event){
 				event.preventDefault();
