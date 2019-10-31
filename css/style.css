@@ -20,6 +20,11 @@
 	 z-index: 1000;
  }
  
+ #videoGame{
+	 text-align:center;
+	 width:100%;
+ }
+ 
  #my-header{
 	 width: 100%;
 	 top: 0;

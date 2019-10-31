@@ -16,8 +16,11 @@ var showCaseData = '';
 var homeData = '';
 var adminSkillsData = '';
 var adminProjectData = '';
-var footer = '<footer id="my-footer"><p>Author: Mathew Boland - Last Updated:October 28, 2019</p></footer>';
-
+var footer = '<footer id="my-footer"><p>Author: Mathew Boland - Last Updated:October 30, 2019</p></footer>';
+/*function to return footer*/
+function getFooter(){
+	return footer;
+}
 /* Returns the global variable showCaseData when called.*/
 function getShowCaseData(){
 	return showCaseData;
