@@ -67,8 +67,28 @@
  }
  
  #my-canvas{
-	 padding: 3%;
 	 text-align: center;
+	 background-color: black;
+ }
+ 
+ #my-controls{
+	 border-bottom:3px solid black;
+	 background-color:#124f8c;
+	 padding-bottom:15px;
+	 text-align: center;
+ }
+ 
+ #my-controls ul{
+	 padding:0;
+	 width:100%;
+	 list-style: none;
+ }
+ 
+ #my-controls li{
+	 float:left;	 
+	 padding-right: 5%;
+	 padding-left: 5%;
+	 display:inline;
  }
  
  body{

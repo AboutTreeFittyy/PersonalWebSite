@@ -1,6 +1,6 @@
 /* FileName: HTMLGenerator.js
  * Author: Mathew Boland
- * Date Modified: October 28th, 2019
+ * Date Modified: december 16th, 2019
  * Description: Class with accessors to the sites database.
  * Using set functions to retrieve the data from the database
  * so that they can format that particular part of the sites HTML.
@@ -16,7 +16,7 @@ var showCaseData = '';
 var homeData = '';
 var adminSkillsData = '';
 var adminProjectData = '';
-var footer = '<footer id="my-footer"><p>Author: Mathew Boland - Last Updated:October 30, 2019</p></footer>';
+var footer = '<footer id="my-footer"><p>Author: Mathew Boland - Last Updated:December 16, 2019</p></footer>';
 /*function to return footer*/
 function getFooter(){
 	return footer;
