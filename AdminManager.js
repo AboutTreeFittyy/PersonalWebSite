@@ -86,12 +86,37 @@ function changeOrder(id, order){
 		success:function(data){
 			//reload the div so that it updates properly
 			setAdminProjectData();
+			generateHomePage();
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
 		}
 	});	
 }
+
+/* Accesses the database when called to retrieve the needed data for the project delete
+ * admin area which it save in the homeData variable. Then appends the data with the
+ * proper HTML to the correct part of the page for display.
+*/
+function generateHomePage(){
+	//get data with ajax
+	var data = {
+		"ht" : "placeholder"
+	};							
+	var dataString = JSON.stringify(data);
+	$.ajax({
+		url:"generateHome.php",
+		method: "POST",
+		data: {myData: dataString},
+		success:function(data){
+			//alert("Successfully made home page");
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
+		}
+	});									
+}
+
 function fixHeader(){
 	$head = $("#my-header");
 	$pad = $head.css('padding-top');

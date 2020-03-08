@@ -382,7 +382,7 @@ var FirstLevel = new Phaser.Class({
             this.player.scene.keyboard.E.isDown = true;
             nicole.npcSpeak(this.player, nicole);  
         }
-		this.scene.resume(CST.SCENES.FIRSTLEVEL);
+		//this.scene.resume(CST.SCENES.FIRSTLEVEL);
     }, 
 
     /*This progress check, checks the following: If the player has talked to Chad

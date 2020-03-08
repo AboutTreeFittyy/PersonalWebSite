@@ -17,11 +17,10 @@
 	<header id="my-header">
 		<div class="container">
 			<ul><li>
-				<a href="Home.html">Home</a></li><li>
+				<a href="index.html">Home</a></li><li>
 				<a href="ShowCase.html">Projects</a></li><li>				
 				<a href="https://github.com/AboutTreeFittyy">GitHub</a></li><li>				
 				<a href="https://www.linkedin.com/">LinkedIn</a></li><li>
-				<a href="Admin.html">Temp</a></li><li>
 				<a href="Game.html">Game</a></li><li>
 			</li></ul>
 		</div>		
@@ -110,6 +109,7 @@
 										//success
 										document.getElementById('deleteSkillStatus').setAttribute( "class", "greenClass" );
 										document.getElementById("deleteSkillStatus").innerHTML = "Skill Successfully Deleted";
+										generateHomePage();
 									}
 									else{
 										//got an error message to display
@@ -167,6 +167,7 @@
 													setAdminProjectData();
 													document.getElementById('projectDeleteStatus').setAttribute( "class", "greenClass" );
 													document.getElementById("projectDeleteStatus").innerHTML = 'Project Deleted Successfully';
+													generateHomePage();
 												}
 											}
 										}
@@ -254,6 +255,7 @@
 													document.getElementById("homeDescription").value = '';
 													document.getElementById('homeUploadStatus').setAttribute( "class", "greenClass" );
 													document.getElementById("homeUploadStatus").innerHTML = "Home page Updated Successfully";
+													generateHomePage();
 												}
 											},
 											error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -310,6 +312,7 @@
 							document.getElementById("newSkillDescription").value = '';
 							document.getElementById('addSkillStatus').setAttribute( "class", "greenClass" );
 							document.getElementById("addSkillStatus").innerHTML = "Skill Successfully Added";
+							generateHomePage();
 						}
 						else{
 							//got an error message to display
@@ -421,6 +424,7 @@
 																				document.getElementById("projectDescription").value = '';
 																				document.getElementById('projectUploadStatus').setAttribute( "class", "greenClass" );
 																				document.getElementById("projectUploadStatus").innerHTML = 'Project Uploaded Successfully';	
+																				generateHomePage();
 																			}
 																			else{
 																				document.getElementById('projectUploadStatus').setAttribute( "class", "redClass" );

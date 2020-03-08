@@ -16,7 +16,7 @@ var showCaseData = '';
 var homeData = '';
 var adminSkillsData = '';
 var adminProjectData = '';
-var footer = '<footer id="my-footer"><p>Author: Mathew Boland - Last Updated:December 16, 2019</p></footer>';
+var footer = '<footer id="my-footer"><p>Author: Mathew Boland - Last Updated: March 7, 2020</p></footer>';
 /*function to return footer*/
 function getFooter(){
 	return footer;
@@ -85,7 +85,7 @@ function setShowCaseData(){
 													//Until we find a skill entry that matches the entry for the projects id in the join table
 													if(skillData[h].skill_id == joinData[k].skill_id){
 														//Matching entry found so add its title to buffer
-														projectBuffer += ' - '+'<a href="Home.html#'+skillData[h].Title+'">'+skillData[h].Title+'</a>';
+														projectBuffer += ' - '+'<a href="index.html#'+skillData[h].Title+'">'+skillData[h].Title+'</a>';
 													}
 												}												
 											}
@@ -127,11 +127,13 @@ function setShowCaseData(){
 function getHomeData(){
 	return homeData;
 }
+
+/*deprecated, replaced by similar function in admin manager*/
 /* Accesses the database when called to retrieve the needed data for the project delete
  * admin area which it save in the homeData variable. Then appends the data with the
  * proper HTML to the correct part of the page for display.
 */
-function setHomeData(){
+/*function setHomeData(){
 	//get data with ajax
 	var pjData = new XMLHttpRequest();
 	var skillsListBuffer = '', skillsSectionBuffer = '';
@@ -191,6 +193,24 @@ function setHomeData(){
 									//add skills section now
 									homeData += '</div></div><div class = "my-skills" id="skills">'+skillsSectionBuffer+'</div><div id="spacefooter"></div>';
 									homeData += footer;
+									
+									var data = {
+										"ht" : homeData
+									};							
+									var dataString = JSON.stringify(data);
+									$.ajax({
+										url:"generateHome.php",
+										method: "POST",
+										data: {myData: dataString},
+										success:function(data){
+											//reload the div so that it updates properly
+											alert("Successfully made home page");
+										},
+										error: function(XMLHttpRequest, textStatus, errorThrown) {
+											alert("Problem: "+XMLHttpRequest.status+" "+XMLHttpRequest.statusText);
+										}
+									});	
+									
 									document.getElementById('pageData').innerHTML = homeData;
 								}
 							};
@@ -200,7 +220,7 @@ function setHomeData(){
 			};
 		}
 	};		
-}
+}*/
 /* Returns the global variable adminSkillsData when called.*/
 function getAdminSkillsData(){
 	return adminSkillsData;
